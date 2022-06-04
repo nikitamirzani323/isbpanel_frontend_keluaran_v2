@@ -18,7 +18,7 @@
           
         </div>
         <div class="navbar-center">
-          <a class="btn btn-ghost normal-case text-xl">
+          <a href="/" class="btn btn-ghost normal-case text-xl">
             <img src="{logo}" alt="Hasil Keluaran Togel / Berita Hari Ini" width="100">
           </a>
         </div>
@@ -34,7 +34,7 @@
         
       </div>
       <div class="navbar-center">
-        <a class="btn btn-ghost normal-case text-xl">
+        <a href="/" class="btn btn-ghost normal-case text-xl">
           <img src="{logo}" alt="Hasil Keluaran Togel / Berita Hari Ini" width="100">
         </a>
       </div>

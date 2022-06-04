@@ -1,5 +1,8 @@
 <script context="module">
+    import { MY_GO_PATH_SITE } from '$lib/Env';
     import { browser } from '$app/env'
+    let path_site = MY_GO_PATH_SITE
+    console.log(path_site)
     let client_device = "WEBSITE"
     if(browser){
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -25,7 +28,7 @@
         let slug = params.slug;
         let hostname_client = url.host
         console.log(params)
-        const res_listkeluaran = await fetch("http://localhost:3000/api/keluarantogel", {
+        const res_listkeluaran = await fetch(path_site+"api/keluarantogel", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -50,6 +53,7 @@
         pasaran_descp = record_listkeluaran.pasaran_descp
         return { props: { 
             client_device,
+            path_site,
             slug,
             paito_minggu,
             paito_senin,
@@ -67,9 +71,9 @@
 </script>
   
 <script>
-    import { MY_GO_PATH_SITE } from '$lib/Env';
     import Banner_top from '../components/banner_top.svelte';
     export let client_device = "";
+    export let path_site = "";
     export let listkeluaran = [];
     export let listpasaran = [];
     export let paito_minggu = {};
@@ -112,18 +116,18 @@
 <svelte:head>
     <title>{pasaran_title}</title>
     <meta name="description" content="{pasaran_descp}">
-    <meta name="author" content="{MY_GO_PATH_SITE}">
+    <meta name="author" content="{path_site}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{MY_GO_PATH_SITE}{slug}">
+    <meta property="og:url" content="{path_site}{slug}">
     <meta property="og:title" content="{pasaran_title}">
     <meta property="og:description" content="{pasaran_descp}">
     <meta property="og:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{MY_GO_PATH_SITE}{slug}">
+    <meta property="twitter:url" content="{path_site}{slug}">
     <meta property="twitter:title" content="{pasaran_title}">
     <meta property="twitter:description" content="{pasaran_descp}">
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
