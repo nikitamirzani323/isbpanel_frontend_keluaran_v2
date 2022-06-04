@@ -4,6 +4,8 @@
         // api/listnews/index.js
         // api/listnewmovie/index.js
         // api/bukumimpi/index.js
+        // api/tafsirmimpi/index.js
+        let hostname_client = url.host
         let listkeluaran = [];
         let listnews = [];
         let bukumimpi = [];
@@ -12,7 +14,9 @@
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                hostname:hostname_client
+            }),
         })
         const record_listkeluaran = await res_listkeluaran.json();
         listkeluaran = record_listkeluaran.data
@@ -22,7 +26,9 @@
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                hostname:hostname_client
+            }),
         })
         const record_listnews = await res_listnews.json();
         listnews = record_listnews.data
@@ -33,12 +39,15 @@
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                hostname:hostname_client
+            }),
         })
         const record_bukumimpi = await res_bukumimpi.json();
         bukumimpi = record_bukumimpi.data
         return {
             props: {
+                hostname_client,
                 listkeluaran,
                 listnews,
                 bukumimpi,
@@ -47,19 +56,34 @@
     };
 </script>
 <script>
-    export let listkeluaran;
-    export let listnews;
-    export let bukumimpi;
+    import imgdummy from '$lib/assets/placeholder.png';
+    import Placholder from '../components/placholder.svelte';
+    import Banner_top from '../components/banner_top.svelte';
+
+    export let hostname_client = "";
+    export let listkeluaran = [];
+    export let listnews = [];
+    export let bukumimpi = [];
+    const loaded = new Map();
+    let tafsirmimpi = [];
     let listnewsmovie = [];
     let tipe_bukumimpi = "";
     let filterBukuMimpi = [];
+    let filterTafsirMimpi = [];
     let searchbukumimpi = "";
+    let searchtafsirmimpi = "";
     let tab_1_1 = "tab-active"
     let tab_1_2 = ""
     let tab_1_3 = ""
     let panel_1_1 = true
     let panel_1_2 = false
     let panel_1_3 = false
+    let tab_groupbookdream_bukumimpi = "tab-active"
+    let tab_groupbookdream_tafsirmimpi = ""
+    let tab_groupbookdream_bbfs = ""
+    let panel_groupbookdream_bukumimpi = true
+    let panel_groupbookdream_tafsirmimpi = false
+    let panel_groupbookdream_bfs = false
     let tab_bukumimpi_all = "tab-active"
     let tab_bukumimpi_4d = ""
     let tab_bukumimpi_3d = ""
@@ -156,12 +180,31 @@
         datashio[j].unshift(res[j].toUpperCase());
         }
     }
+    function lazy(node, data) {
+		if (loaded.has(data.src)) {
+			node.setAttribute('src', data.src);
+		} else {
+			// simulate slow loading network
+			setTimeout(() => {
+				const img = new Image();
+				img.src = data.src;
+				img.onload = () => {
+					loaded.set(data.src, img);
+					node.setAttribute('src', data.src); 
+				};
+			}, 100);
+		}
+		return {
+			destroy(){} // noop
+		};
+	}
     async function postbukumimpi(){
         filterBukuMimpi = [];
         bukumimpi = [];
         const resdata = await fetch("/api/bukumimpi", {
             method: "POST",
             body: JSON.stringify({
+                hostname: hostname_client,
                 bukumimpi_nama: searchbukumimpi.toLowerCase(),
                 bukumimpi_tipe: tipe_bukumimpi,
             }),
@@ -184,11 +227,43 @@
             }
 		}
     }
+    async function posttafsirmimpi(){
+        filterTafsirMimpi = [];
+        tafsirmimpi = [];
+        const resdata = await fetch("/api/tafsirmimpi", {
+            method: "POST",
+            body: JSON.stringify({
+                hostname: hostname_client,
+                tafsirmimpi_search: searchtafsirmimpi.toLowerCase(),
+            }),
+        });
+        if (!resdata.ok) {
+            const pasarMessage = `An error has occured: ${resdata.status}`;
+            throw new Error(pasarMessage);
+        }else{
+            const jsondata = await resdata.json();
+            let record = jsondata.data;
+            for (var i = 0; i < record.length; i++) {
+                tafsirmimpi = [
+                    ...tafsirmimpi,
+                    {
+                        tafsirmimpi_mimpi: record[i]["tafsirmimpi_mimpi"],
+                        tafsirmimpi_artimimpi: record[i]["tafsirmimpi_artimimpi"],
+                        tafsirmimpi_angka2d: record[i]["tafsirmimpi_angka2d"],
+                        tafsirmimpi_angka3d: record[i]["tafsirmimpi_angka3d"],
+                        tafsirmimpi_angka4d: record[i]["tafsirmimpi_angka4d"],
+                    },
+                ];
+            }
+		}
+    }
     async function postmovienews(){
         listnewsmovie = [];
         const resdata = await fetch("/api/listnewsmovie", {
             method: "POST",
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                hostname: hostname_client,
+            }),
         });
         if (!resdata.ok) {
             const pasarMessage = `An error has occured: ${resdata.status}`;
@@ -208,6 +283,31 @@
                 ];
             }
 		}
+    }
+    const handleGroupBookDream = (e) => {
+        switch (e) {
+            case "bukumimpi":
+                tipe_bukumimpi = "";
+                searchbukumimpi = "";
+                tab_groupbookdream_bukumimpi = "tab-active"
+                tab_groupbookdream_tafsirmimpi = ""
+                tab_groupbookdream_bbfs = ""
+                panel_groupbookdream_bukumimpi = true
+                panel_groupbookdream_tafsirmimpi = false
+                panel_groupbookdream_bfs = false
+                postbukumimpi();
+                break;
+            case "tafsirmimpi":
+                searchtafsirmimpi = "";
+                tab_groupbookdream_bukumimpi = ""
+                tab_groupbookdream_tafsirmimpi = "tab-active"
+                tab_groupbookdream_bbfs = ""
+                panel_groupbookdream_bukumimpi = false
+                panel_groupbookdream_tafsirmimpi = true
+                panel_groupbookdream_bfs = false
+                posttafsirmimpi()
+                break;
+        }
     }
     const handleClickBukuMimpi = (e) => {
         switch (e) {
@@ -247,12 +347,20 @@
         postbukumimpi();
     }
     const handleKeyboardbukumimpi_checkenter = (e) => {
-      let keyCode = e.which || e.keyCode;
-      if (keyCode === 13) {
-          filterBukuMimpi = [];
-          bukumimpi = [];
-          postbukumimpi();
-      }  
+        let keyCode = e.which || e.keyCode;
+        if (keyCode === 13) {
+            filterBukuMimpi = [];
+            bukumimpi = [];
+            postbukumimpi();
+        }  
+    };
+    const handleKeyboardtafsirmimpi_checkenter = (e) => {
+        let keyCode = e.which || e.keyCode;
+        if (keyCode === 13) {
+            filterTafsirMimpi = [];
+            tafsirmimpi = [];
+            posttafsirmimpi();
+        }  
     };
     $: {
         if (searchbukumimpi) {
@@ -264,48 +372,59 @@
         } else {
             filterBukuMimpi = [...bukumimpi];
         }
+        if (searchtafsirmimpi) {
+            filterTafsirMimpi = tafsirmimpi.filter((item) =>
+                item.tafsirmimpi_mimpi
+                    .toLowerCase()
+                    .includes(searchtafsirmimpi.toLowerCase())
+            );
+        } else {
+            filterTafsirMimpi = [...tafsirmimpi];
+        }
     }
     initShio();
 </script>
 <svelte:head>
     <title>Hasil Keluaran Togel / Berita Hari Ini</title>
 </svelte:head>
-<article class="flex flex-col w-full gap-2 mb-2">
-    <img class="w-full" src="https://i.ibb.co/dDnQv7K/banner.gif" alt="">
-    <img class="w-full" src="https://i.ibb.co/Mf1XP1T/banner-1.gif" alt="">
-</article>
+<Banner_top />
 <article class="grid grid-cols-2 w-full gap-2">
     <section class="w-full">
         <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Keluaran Togel</h2>
-                <div class="overflow-x-auto">
-                    <table class="table table-compact w-full">
-                        <thead>
-                            <tr>
-                                <th class="text-xs text-left">PASARAN</th> 
-                                <th class="text-xs text-center">TANGGAL</th> 
-                                <th class="text-xs text-left">HARI</th> 
-                                <th class="text-xs text-center">JADWAL</th> 
-                                <th class="text-xs text-center">KELUARAN</th>
-                            </tr>
-                        </thead> 
-                        <tbody>
-                            {#each listkeluaran as rec}
+                {#if listkeluaran != ""}
+                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Keluaran Togel</h2>
+                    <div class="overflow-x-auto">
+                        <table class="table table-compact w-full">
+                            <thead>
                                 <tr>
-                                    <td class="text-xs text-left">{rec.pasaran_name}</td> 
-                                    <td class="text-xs text-center">{rec.pasaran_datekeluaran}</td> 
-                                    <td class="text-xs text-left">{rec.pasaran_name}</td> 
-                                    <td class="text-xs text-center">{rec.pasaran_jamjadwal}</td> 
-                                    <td class="text-xs text-center">
-                                        <span class="text-accent underline cursor-pointer">{rec.pasaran_keluaran}</span>
-                                    </td>
+                                    <th class="text-xs text-left">PASARAN</th> 
+                                    <th class="text-xs text-center">TANGGAL</th> 
+                                    <th class="text-xs text-left">HARI</th> 
+                                    <th class="text-xs text-center">JADWAL</th> 
+                                    <th class="text-xs text-center">KELUARAN</th>
                                 </tr>
-                            {/each}
-                        </tbody> 
-                    </table>
-                  </div>
+                            </thead> 
+                            <tbody>
+                                {#each listkeluaran as rec}
+                                    <tr>
+                                        <td class="text-xs text-left">{rec.pasaran_name}</td> 
+                                        <td class="text-xs text-center">{rec.pasaran_datekeluaran}</td> 
+                                        <td class="text-xs text-left">{rec.pasaran_name}</td> 
+                                        <td class="text-xs text-center">{rec.pasaran_jamjadwal}</td> 
+                                        <td class="text-xs text-center">
+                                            <span class="text-accent underline cursor-pointer">{rec.pasaran_keluaran}</span>
+                                        </td>
+                                    </tr>
+                                {/each}
+                            </tbody> 
+                        </table>
+                    </div>
+                {:else}
+                    <Placholder total_placeholder={4} />
+                {/if}
             </div>
+            
         </aside>
         <section class="mb-4">
             <aside class="tabs tabs-boxed mb-2">
@@ -544,54 +663,95 @@
         </section>
         <section class="mt-2">
             <aside class="tabs tabs-boxed mb-2">
-                <a class="tab tab-active">Buku Mimpi</a> 
-                <a class="tab">Tafsir Mimpi</a> 
-                <a class="tab">BBFS</a>
+                <a 
+                    on:click={() => {
+                        handleGroupBookDream("bukumimpi");
+                    }}
+                    class="tab {tab_groupbookdream_bukumimpi}">Buku Mimpi</a> 
+                <a 
+                    on:click={() => {
+                        handleGroupBookDream("tafsirmimpi");
+                    }}
+                    class="tab {tab_groupbookdream_tafsirmimpi}">Tafsir Mimpi</a> 
+                <a 
+                    on:click={() => {
+                        handleGroupBookDream("bbfs");
+                    }}
+                    class="tab {tab_groupbookdream_bbfs}">BBFS</a>
             </aside>
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md">
                 <div class="card-body p-2 mb-2 ">
-                    <div class="flex flex-col gap-2">
-                        <aside class="tabs tabs-boxed">
-                            <a 
-                                on:click={() => {
-                                    handleClickBukuMimpi("ALL");
-                                }}
-                                class="tab {tab_bukumimpi_all}">All</a> 
-                            <a 
-                                on:click={() => {
-                                    handleClickBukuMimpi("4D");
-                                }}
-                                class="tab {tab_bukumimpi_4d}">4D</a> 
-                            <a 
-                                on:click={() => {
-                                    handleClickBukuMimpi("3D");
-                                }}
-                                class="tab {tab_bukumimpi_3d}">3D</a>
-                            <a 
-                                on:click={() => {
-                                    handleClickBukuMimpi("2D");
-                                }}
-                                class="tab {tab_bukumimpi_2d}">2D</a>
-                        </aside>
-                        <input
-                            bind:value={searchbukumimpi} 
-                            on:keypress={handleKeyboardbukumimpi_checkenter}
-                            type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
-                        <div class="flex flex-col p-2 gap-2 h-[500px] scrollbar-hide overflow-auto">
-                            {#each filterBukuMimpi as rec}
-                            <div class="flex justify-start gap-4">
-                                <div class="text-accent text-sm self-center">
-                                    {rec.bukumimpi_type}
-                                </div>
-                                <p class="text-sm">
-                                    {rec.bukumimpi_name}
-                                    <br>
-                                    <span class="text-accent text-sm">{rec.bukumimpi_nomor}</span>
-                                </p>
+                    {#if panel_groupbookdream_bukumimpi}
+                        <div class="flex flex-col gap-2">
+                            <aside class="tabs tabs-boxed">
+                                <a 
+                                    on:click={() => {
+                                        handleClickBukuMimpi("ALL");
+                                    }}
+                                    class="tab {tab_bukumimpi_all}">All</a> 
+                                <a 
+                                    on:click={() => {
+                                        handleClickBukuMimpi("4D");
+                                    }}
+                                    class="tab {tab_bukumimpi_4d}">4D</a> 
+                                <a 
+                                    on:click={() => {
+                                        handleClickBukuMimpi("3D");
+                                    }}
+                                    class="tab {tab_bukumimpi_3d}">3D</a>
+                                <a 
+                                    on:click={() => {
+                                        handleClickBukuMimpi("2D");
+                                    }}
+                                    class="tab {tab_bukumimpi_2d}">2D</a>
+                            </aside>
+                            <input
+                                bind:value={searchbukumimpi} 
+                                on:keypress={handleKeyboardbukumimpi_checkenter}
+                                type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
+                            <div class="flex flex-col p-2 gap-2 h-[500px] scrollbar-hide overflow-auto">
+                                {#if filterBukuMimpi != ""}
+                                    {#each filterBukuMimpi as rec}
+                                        <div class="flex justify-start gap-4">
+                                            <div class="text-accent text-sm self-center">
+                                                {rec.bukumimpi_type}
+                                            </div>
+                                            <p class="text-sm">
+                                                {rec.bukumimpi_name}
+                                                <br>
+                                                <span class="text-accent text-sm">{rec.bukumimpi_nomor}</span>
+                                            </p>
+                                        </div>
+                                    {/each}
+                                {:else}
+                                    <Placholder total_placeholder={6} />
+                                {/if}
                             </div>
-                            {/each}
                         </div>
-                    </div>
+                    {/if}
+                    {#if panel_groupbookdream_tafsirmimpi}
+                        <div class="flex flex-col gap-2">
+                            <input
+                                bind:value={searchtafsirmimpi} 
+                                on:keypress={handleKeyboardtafsirmimpi_checkenter}
+                                type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
+                            <div class="flex flex-col p-2 gap-2 h-[550px] scrollbar-hide overflow-auto">
+                                {#if filterTafsirMimpi != ""}
+                                    {#each filterTafsirMimpi as rec}
+                                        <p class="text-sm">
+                                            {rec.tafsirmimpi_artimimpi}
+                                            <br>
+                                            2D : <span class="text-accent text-sm">{rec.tafsirmimpi_angka2d}</span><br>
+                                            3D : <span class="text-accent text-sm">{rec.tafsirmimpi_angka3d}</span><br>
+                                            4D : <span class="text-accent text-sm">{rec.tafsirmimpi_angka4d}</span>
+                                        </p>
+                                    {/each}
+                                {:else}
+                                    <Placholder total_placeholder={7} />
+                                {/if}
+                            </div>
+                        </div>
+                    {/if}
                 </div>
             </aside>
         </section>
@@ -599,33 +759,37 @@
     <section class="w-full">
         <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Prediksi Togel</h2>
-                <div class="overflow-x-auto">
-                    <table class="table table-compact w-full">
-                        <thead>
-                            <tr>
-                                <th class="text-xs text-left">PASARAN</th> 
-                                <th class="text-xs text-center">TANGGAL</th> 
-                                <th class="text-xs text-center">BBFS</th> 
-                                <th class="text-xs text-center">NOMOR</th>
-                            </tr>
-                        </thead> 
-                        <tbody>
-                            {#each listkeluaran as rec}
+                {#if listkeluaran != ""}
+                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Prediksi Togel</h2>
+                    <div class="overflow-x-auto">
+                        <table class="table table-compact w-full">
+                            <thead>
                                 <tr>
-                                    <td class="text-xs text-left">{rec.pasaran_name}</td> 
-                                    <td class="text-xs text-center">{rec.pasaran_dateprediksi}</td> 
-                                    <td class="text-xs text-center">
-                                        <span class="text-accent">{rec.pasaran_bbfsprediksi}</span>
-                                    </td>
-                                    <td class="text-xs text-center">
-                                        <span class="text-accent">{rec.pasaran_nomorprediksi}</span>
-                                    </td>
+                                    <th class="text-xs text-left">PASARAN</th> 
+                                    <th class="text-xs text-center">TANGGAL</th> 
+                                    <th class="text-xs text-center">BBFS</th> 
+                                    <th class="text-xs text-center">NOMOR</th>
                                 </tr>
-                            {/each}
-                        </tbody> 
-                    </table>
-                  </div>
+                            </thead> 
+                            <tbody>
+                                {#each listkeluaran as rec}
+                                    <tr>
+                                        <td class="text-xs text-left">{rec.pasaran_name}</td> 
+                                        <td class="text-xs text-center">{rec.pasaran_dateprediksi}</td> 
+                                        <td class="text-xs text-center">
+                                            <span class="text-accent">{rec.pasaran_bbfsprediksi}</span>
+                                        </td>
+                                        <td class="text-xs text-center">
+                                            <span class="text-accent">{rec.pasaran_nomorprediksi}</span>
+                                        </td>
+                                    </tr>
+                                {/each}
+                            </tbody> 
+                        </table>
+                    </div>
+                {:else}
+                    <Placholder total_placeholder={4} />
+                {/if}
             </div>
         </aside>
         <section class="mb-4">
@@ -644,40 +808,52 @@
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md ">
                 <aside class="card-body p-2 mb-2">
                     {#if panel_newberita}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Berita Hari Ini</h2>
-                        <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
-                            {#each listnews as rec}
-                                <a href="{rec.news_url}" target="_blank">
-                                    <div class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
-                                        <div class="card-body p-2 mb-2">
-                                            <img class="w-full h-1/2" src="{rec.news_image}" alt="{rec.news_title}">
-                                            <h2 class="font-semibold text-sm underline">{rec.news_title}</h2>
-                                            <p class="text-xs text-base-content/70">
-                                                {rec.news_descp}
-                                            </p>
+                        {#if listnews != ""}
+                            <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Berita Hari Ini</h2>
+                            <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">  
+                                {#each listnews as rec}
+                                    <a href="{rec.news_url}" target="_blank">
+                                        <div class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
+                                            <div class="card-body p-2 mb-2">
+                                                <img class="w-full h-1/2" 
+                                                    use:lazy="{{src: rec.news_image}}" 
+                                                    src="{imgdummy}" alt="{rec.news_title}">
+                                                <h2 class="font-semibold text-sm underline">{rec.news_title}</h2>
+                                                <p class="text-xs text-base-content/70">
+                                                    {rec.news_descp}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            {/each}
-                        </div>
+                                    </a>
+                                {/each}
+                            </div>
+                        {:else}
+                            <Placholder total_placeholder={10} />
+                        {/if}
                     {/if}
                     {#if panel_newmovie}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Movie Minggu Ini</h2>
-                        <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
-                            {#each listnewsmovie as rec}
-                                <a href="{rec.news_url}" target="_blank">
-                                    <div class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
-                                        <div class="card-body p-2 mb-2">
-                                            <img class="w-full h-1/2" src="{rec.news_image}" alt="{rec.news_title}">
-                                            <h2 class="font-semibold text-sm underline">{rec.news_title}</h2>
-                                            <p class="text-xs text-base-content/70">
-                                                {rec.news_descp}
-                                            </p>
+                        {#if listnewsmovie != ""}
+                            <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Movie Minggu Ini</h2>
+                            <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
+                                {#each listnewsmovie as rec}
+                                    <a href="{rec.news_url}" target="_blank">
+                                        <div class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
+                                            <div class="card-body p-2 mb-2">
+                                                <img class="w-full h-1/2" 
+                                                    use:lazy="{{src: rec.news_image}}" 
+                                                    src="{imgdummy}" alt="{rec.news_title}">
+                                                <h2 class="font-semibold text-sm underline">{rec.news_title}</h2>
+                                                <p class="text-xs text-base-content/70">
+                                                    {rec.news_descp}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            {/each}
-                        </div>
+                                    </a>
+                                {/each}
+                            </div>
+                        {:else}
+                            <Placholder total_placeholder={10} />
+                        {/if}
                     {/if}
                 </aside>
             </aside>
