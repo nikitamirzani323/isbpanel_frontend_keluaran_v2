@@ -5,7 +5,7 @@
 </script>
 
 <Nav />
-<div class="p-1 max-w-6xl mx-auto">
+<main class="p-3 max-w-6xl mx-auto glass bg-opacity-60 xl:rounded-box mt-2 mb-2">
     <slot />
-</div>
+</main>
 <Footer />

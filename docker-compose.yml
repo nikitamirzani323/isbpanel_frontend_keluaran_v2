@@ -1,28 +1,12 @@
-version: "3.9"
-   
-services:
-  backend:
-    restart: unless-stopped
-    env_file:
-    - ./backend/.env
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "5000:3000"
-    networks:
-      - backend-net
-    depends_on:
+version: '2'
 
-  frontend:
-    restart: unless-stopped
-    env_file:
-    - ./frontend/.env
+services:
+  isbpanel-frontend-keluaran:
+    container_name: isbpanel-frontend-keluaran
+    image: isbpanel-frontend-keluaran:0.0.1
+    build: .
+    volumes:
+    - ./frontendkeluaran:/app/frontendkeluaran
     ports:
-      - "3000:3000"
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-networks:
-  backend-net:
-    name: backend-net
+      - 3010:3010
+    restart: always
