@@ -386,6 +386,8 @@
 </script>
 <svelte:head>
     <title>Hasil Keluaran Togel / Berita Hari Ini</title>
+    <meta name="description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
+    <meta name="author" content="resultsdsb.com">
 </svelte:head>
 <Banner_top />
 <article class="grid grid-cols-2 w-full gap-2">
