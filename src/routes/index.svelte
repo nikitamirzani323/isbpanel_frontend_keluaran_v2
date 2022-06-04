@@ -57,6 +57,7 @@
     };
 </script>
 <script>
+    import { MY_GO_PATH_SITE } from '$lib/Env';
     import imgdummy from '$lib/assets/placeholder.png';
     import Placholder from '../components/placholder.svelte';
     import Banner_top from '../components/banner_top.svelte';
@@ -388,7 +389,20 @@
 <svelte:head>
     <title>Hasil Keluaran Togel / Berita Hari Ini</title>
     <meta name="description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
-    <meta name="author" content="resultsdsb.com">
+    <meta name="author" content="{MY_GO_PATH_SITE}">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{MY_GO_PATH_SITE}">
+    <meta property="og:title" content="Hasil Keluaran Togel / Berita Hari Ini">
+    <meta property="og:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
+    <meta property="og:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{MY_GO_PATH_SITE}">
+    <meta property="twitter:title" content="Hasil Keluaran Togel / Berita Hari Ini">
+    <meta property="twitter:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
+    <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
 <Banner_top />
 <article class="grid grid-cols-2 w-full gap-2">
@@ -411,7 +425,7 @@
                             <tbody>
                                 {#each listkeluaran as rec}
                                     <tr>
-                                        <td class="text-xs text-left">
+                                        <td class="text-xs text-left underline">
                                             <a href="{rec.pasaran_slug}">
                                                 {rec.pasaran_name}
                                             </a>

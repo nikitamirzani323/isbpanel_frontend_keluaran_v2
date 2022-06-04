@@ -57,6 +57,7 @@
 </script>
   
 <script>
+    import { MY_GO_PATH_SITE } from '$lib/Env';
     import Banner_top from '../components/banner_top.svelte';
     export let listkeluaran = [];
     export let listpasaran = [];
@@ -100,7 +101,21 @@
 <svelte:head>
     <title>{pasaran_title}</title>
     <meta name="description" content="{pasaran_descp}">
-    <meta name="author" content="resultsdsb.com/{capitalize(pasaran_nama)}">
+    <meta name="author" content="{MY_GO_PATH_SITE}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{MY_GO_PATH_SITE}{slug}">
+    <meta property="og:title" content="{pasaran_title}">
+    <meta property="og:description" content="{pasaran_descp}">
+    <meta property="og:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{MY_GO_PATH_SITE}{slug}">
+    <meta property="twitter:title" content="{pasaran_title}">
+    <meta property="twitter:description" content="{pasaran_descp}">
+    <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
 <Banner_top />
 <div class="text-sm breadcrumbs">
