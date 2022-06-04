@@ -509,6 +509,41 @@
                 </div>
                 
             </aside>
+            <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+                <div class="card-body p-2 mb-2">
+                    {#if listkeluaran != ""}
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Prediksi Togel</h2>
+                        <div class="overflow-x-auto">
+                            <table class="table table-compact w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="text-xs text-left">PASARAN</th> 
+                                        <th class="text-xs text-center">TANGGAL</th> 
+                                        <th class="text-xs text-center">BBFS</th> 
+                                        <th class="text-xs text-center">NOMOR</th>
+                                    </tr>
+                                </thead> 
+                                <tbody>
+                                    {#each listkeluaran as rec}
+                                        <tr>
+                                            <td class="text-xs text-left">{rec.pasaran_name}</td> 
+                                            <td class="text-xs text-center">{rec.pasaran_dateprediksi}</td> 
+                                            <td class="text-xs text-center">
+                                                <span class="text-accent">{rec.pasaran_bbfsprediksi}</span>
+                                            </td>
+                                            <td class="text-xs text-center">
+                                                <span class="text-accent">{rec.pasaran_nomorprediksi}</span>
+                                            </td>
+                                        </tr>
+                                    {/each}
+                                </tbody> 
+                            </table>
+                        </div>
+                    {:else}
+                        <Placholder total_placeholder={4} />
+                    {/if}
+                </div>
+            </aside>
             <section class="mb-4">
                 <aside class="tabs tabs-boxed mb-2">
                     <a 
@@ -843,32 +878,69 @@
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
                 <div class="card-body p-2 mb-2">
                     {#if listkeluaran != ""}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Prediksi Togel</h2>
-                        <div class="overflow-x-auto">
-                            <table class="table table-compact w-full">
-                                <thead>
-                                    <tr>
-                                        <th class="text-xs text-left">PASARAN</th> 
-                                        <th class="text-xs text-center">TANGGAL</th> 
-                                        <th class="text-xs text-center">BBFS</th> 
-                                        <th class="text-xs text-center">NOMOR</th>
-                                    </tr>
-                                </thead> 
-                                <tbody>
-                                    {#each listkeluaran as rec}
-                                        <tr>
-                                            <td class="text-xs text-left">{rec.pasaran_name}</td> 
-                                            <td class="text-xs text-center">{rec.pasaran_dateprediksi}</td> 
-                                            <td class="text-xs text-center">
-                                                <span class="text-accent">{rec.pasaran_bbfsprediksi}</span>
-                                            </td>
-                                            <td class="text-xs text-center">
-                                                <span class="text-accent">{rec.pasaran_nomorprediksi}</span>
-                                            </td>
-                                        </tr>
-                                    {/each}
-                                </tbody> 
-                            </table>
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Daftar RTP Slot Gacor</h2>
+                        <div class="grid grid-cols-3 gap-2 p-2">
+                            <button class="btn btn-sm btn-outline btn-primary">PRAGMATIC PLAY</button>
+                            <button class="btn btn-sm btn-outline btn-primary">MICROGAMING</button>
+                            <button class="btn btn-sm btn-outline btn-primary">SLOT PG SLOT</button>
+                            <button class="btn btn-sm btn-outline btn-primary">ION SLOT</button>
+                            <button class="btn btn-sm btn-outline btn-primary">SLOT JOKER</button>
+                            <button class="btn btn-sm btn-outline btn-primary">SPACE GAMING</button>
+                            <button class="btn btn-sm btn-outline btn-primary">HABANERO</button>
+                            <button class="btn btn-sm btn-outline btn-primary">PLAYTECH</button>
+                        </div>
+                    {:else}
+                        <Placholder total_placeholder={4} />
+                    {/if}
+                </div>
+            </aside>
+            <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+                <div class="card-body p-2 mb-2">
+                    {#if listkeluaran != ""}
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini</h2>
+                        <div class="grid grid-cols-3 gap-2 p-2">
+                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
+                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Nexus-Sweet-Bonanza.jpg" alt="Nexus Sweet Bonanza">
+                                <h3 class="text-xs text-base-content">Nexus Sweet Bonanza</h3>
+                                <div class="w-full bg-gray-200 rounded-full ">
+                                    <div class="bg-success animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 95%"> 95%</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
+                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Sweet-Bonanza.jpg" alt="">
+                                <h3 class="text-xs text-base-content">Sweet Bonanza</h3>
+                                <div class="w-full bg-gray-200 rounded-full">
+                                    <div class="bg-success animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 80%"> 80%</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
+                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Starlight-Princess.jpg" alt="">
+                                <h3 class="text-xs text-base-content">Starlight Princess</h3>
+                                <div class="w-full bg-gray-200 rounded-full">
+                                    <div class="bg-success animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 72%"> 72%</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
+                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Lucky-New-Year-Tiger-Treasures.jpg" alt="">
+                                <h3 class="text-xs text-base-content">Lucky New Year Tiger Treasures</h3>
+                                <div class="w-full bg-gray-200 rounded-full">
+                                    <div class="bg-accent animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 65%"> 65%</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
+                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Great-Rhino-Megaways.jpg" alt="">
+                                <h3 class="text-xs text-base-content">Great Rhino Megaways</h3>
+                                <div class="w-full bg-gray-200 rounded-full">
+                                    <div class="bg-primary animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 25%"> 25%</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
+                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Fire-Strike.jpg" alt="">
+                                <h3 class="text-xs text-base-content">Fire Strike</h3>
+                                <div class="w-full bg-gray-200 rounded-full">
+                                    <div class="bg-primary animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 50%"> 50%</div>
+                                </div>
+                            </div>
                         </div>
                     {:else}
                         <Placholder total_placeholder={4} />
