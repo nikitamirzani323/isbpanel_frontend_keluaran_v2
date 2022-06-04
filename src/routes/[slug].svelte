@@ -2,7 +2,6 @@
     import { MY_GO_PATH_SITE } from '$lib/Env';
     import { browser } from '$app/env'
     let path_site = MY_GO_PATH_SITE
-    console.log(path_site)
     let client_device = "WEBSITE"
     if(browser){
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -116,6 +115,7 @@
 <svelte:head>
     <title>{pasaran_title}</title>
     <meta name="description" content="{pasaran_descp}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="author" content="{path_site}">
 
     <!-- Open Graph / Facebook -->

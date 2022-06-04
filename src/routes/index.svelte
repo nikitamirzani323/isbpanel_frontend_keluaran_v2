@@ -449,6 +449,7 @@
 <svelte:head>
     <title>Hasil Keluaran Togel / Berita Hari Ini</title>
     <meta name="description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="author" content="{MY_GO_PATH_SITE}">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
