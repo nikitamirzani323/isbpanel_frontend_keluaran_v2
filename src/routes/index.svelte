@@ -9,6 +9,7 @@
         let listkeluaran = [];
         let listnews = [];
         let bukumimpi = [];
+        
         const res_listkeluaran = await fetch("/api/listkeluaran", {
             method: "POST",
             headers: {
@@ -410,7 +411,11 @@
                             <tbody>
                                 {#each listkeluaran as rec}
                                     <tr>
-                                        <td class="text-xs text-left">{rec.pasaran_name}</td> 
+                                        <td class="text-xs text-left">
+                                            <a href="{rec.pasaran_slug}">
+                                                {rec.pasaran_name}
+                                            </a>
+                                        </td> 
                                         <td class="text-xs text-center">{rec.pasaran_datekeluaran}</td> 
                                         <td class="text-xs text-left">{rec.pasaran_name}</td> 
                                         <td class="text-xs text-center">{rec.pasaran_jamjadwal}</td> 
