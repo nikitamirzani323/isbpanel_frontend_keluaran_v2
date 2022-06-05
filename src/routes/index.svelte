@@ -14,11 +14,18 @@
         // api/listnewmovie/index.js
         // api/bukumimpi/index.js
         // api/tafsirmimpi/index.js
+        // api/listproviderslot/index.js
+        // api/listslotgacor/index.js
+
+        //slot-gacor-hari-ini/index.svelte
+
         let hostname_client = url.host
         let listkeluaran = [];
         let listnews = [];
+        let listproviderslot = [];
+        let listslotgacor = [];
         let bukumimpi = [];
-        
+        let limit = 9
         const res_listkeluaran = await fetch("/api/listkeluaran", {
             method: "POST",
             headers: {
@@ -30,6 +37,31 @@
         })
         const record_listkeluaran = await res_listkeluaran.json();
         listkeluaran = record_listkeluaran.data
+
+        const res_listproviderslot = await fetch("/api/listproviderslot", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                hostname:hostname_client
+            }),
+        })
+        const record_listproviderslot = await res_listproviderslot.json();
+        listproviderslot = record_listproviderslot.data
+
+        const res_listslotgacor = await fetch("/api/listslotgacor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                hostname:hostname_client,
+                limit:limit,
+            }),
+        })
+        const record_listslotgacor = await res_listslotgacor.json();
+        listslotgacor = record_listslotgacor.data
 
         const res_listnews = await fetch("/api/listnews", {
             method: "POST",
@@ -60,6 +92,8 @@
                 client_device,
                 hostname_client,
                 listkeluaran,
+                listproviderslot,
+                listslotgacor,
                 listnews,
                 bukumimpi,
             }
@@ -76,6 +110,8 @@
     export let client_device = "";
     export let hostname_client = "";
     export let listkeluaran = [];
+    export let listproviderslot = [];
+    export let listslotgacor = [];
     export let listnews = [];
     export let bukumimpi = [];
     const loaded = new Map();
@@ -444,6 +480,16 @@
         let hour = temp[0]
         let minute = temp[1]
         return hour+":"+minute
+    }
+    const bg_slotprogress = (e) => {
+        let temp = "bg-primary"
+        if(parseInt(e) > 49 && parseInt(e)<71){
+            temp = "bg-accent"
+        }
+        if(parseInt(e) > 70 ){
+            temp = "bg-success"
+        }
+        return temp
     }
 </script>
 <svelte:head>
@@ -877,17 +923,14 @@
         <section class="w-full">
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
                 <div class="card-body p-2 mb-2">
-                    {#if listkeluaran != ""}
+                    {#if listproviderslot != ""}
                         <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Daftar RTP Slot Gacor</h2>
                         <div class="grid grid-cols-3 gap-2 p-2">
-                            <button class="btn btn-sm btn-outline btn-primary">PRAGMATIC PLAY</button>
-                            <button class="btn btn-sm btn-outline btn-primary">MICROGAMING</button>
-                            <button class="btn btn-sm btn-outline btn-primary">SLOT PG SLOT</button>
-                            <button class="btn btn-sm btn-outline btn-primary">ION SLOT</button>
-                            <button class="btn btn-sm btn-outline btn-primary">SLOT JOKER</button>
-                            <button class="btn btn-sm btn-outline btn-primary">SPACE GAMING</button>
-                            <button class="btn btn-sm btn-outline btn-primary">HABANERO</button>
-                            <button class="btn btn-sm btn-outline btn-primary">PLAYTECH</button>
+                            {#each listproviderslot as rec}
+                                <a class="btn btn-sm btn-outline btn-primary" href="/slot-gacor-hari-ini/{rec.providerslot_slug}">
+                                    {rec.providerslot_name}
+                                </a>
+                            {/each}
                         </div>
                     {:else}
                         <Placholder total_placeholder={4} />
@@ -896,51 +939,22 @@
             </aside>
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
                 <div class="card-body p-2 mb-2">
-                    {#if listkeluaran != ""}
+                    {#if listslotgacor != ""}
                         <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini</h2>
                         <div class="grid grid-cols-3 gap-2 p-2">
-                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
-                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Nexus-Sweet-Bonanza.jpg" alt="Nexus Sweet Bonanza">
-                                <h3 class="text-xs text-base-content">Nexus Sweet Bonanza</h3>
-                                <div class="w-full bg-gray-200 rounded-full ">
-                                    <div class="bg-success animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 95%"> 95%</div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
-                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Sweet-Bonanza.jpg" alt="">
-                                <h3 class="text-xs text-base-content">Sweet Bonanza</h3>
-                                <div class="w-full bg-gray-200 rounded-full">
-                                    <div class="bg-success animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 80%"> 80%</div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
-                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Starlight-Princess.jpg" alt="">
-                                <h3 class="text-xs text-base-content">Starlight Princess</h3>
-                                <div class="w-full bg-gray-200 rounded-full">
-                                    <div class="bg-success animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 72%"> 72%</div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
-                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Lucky-New-Year-Tiger-Treasures.jpg" alt="">
-                                <h3 class="text-xs text-base-content">Lucky New Year Tiger Treasures</h3>
-                                <div class="w-full bg-gray-200 rounded-full">
-                                    <div class="bg-accent animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 65%"> 65%</div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
-                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Great-Rhino-Megaways.jpg" alt="">
-                                <h3 class="text-xs text-base-content">Great Rhino Megaways</h3>
-                                <div class="w-full bg-gray-200 rounded-full">
-                                    <div class="bg-primary animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 25%"> 25%</div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col justify-center items-center w-full gap-2 mb-2">
-                                <img src="https://rtpslot1010.com/Gambar/RTP-1/Fire-Strike.jpg" alt="">
-                                <h3 class="text-xs text-base-content">Fire Strike</h3>
-                                <div class="w-full bg-gray-200 rounded-full">
-                                    <div class="bg-primary animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: 50%"> 50%</div>
-                                </div>
-                            </div>
+                            {#each listslotgacor as rec}
+                                <a 
+                                    class="flex flex-col justify-center items-center w-full gap-2 mb-2" 
+                                    href="https://146.190.4.188/" target="_blank">
+                                    <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
+                                    <h3 class="text-xs text-base-content">{rec.prediksislot_name}</h3>
+                                    <div class="w-full bg-gray-200 rounded-full ">
+                                        <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                            {rec.prediksislot_prediksi}%
+                                        </div>
+                                    </div>
+                                </a>
+                            {/each}
                         </div>
                     {:else}
                         <Placholder total_placeholder={4} />
@@ -1102,6 +1116,29 @@
                     {/if}
                 </div>
             {/if}
+        </aside>
+        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+            <div class="card-body p-1 mb-2">
+                {#if listslotgacor != ""}
+                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini</h2>
+                    <div class="grid grid-cols-3 gap-2 p-1">
+                        {#each listslotgacor as rec}
+                            <a 
+                                class="flex flex-col justify-center items-center w-full gap-2 mb-2" 
+                                href="https://146.190.4.188/" target="_blank">
+                                <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
+                                <div class="w-full bg-gray-200 rounded-full ">
+                                    <div class="{rec.prediksislot_prediksi_class} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                        {rec.prediksislot_prediksi}%
+                                    </div>
+                                </div>
+                            </a>
+                        {/each}
+                    </div>
+                {:else}
+                    <Placholder total_placeholder={4} />
+                {/if}
+            </div>
         </aside>
         <section class="mb-4">
             <aside class="tabs tabs-boxed mb-2">
