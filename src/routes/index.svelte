@@ -1,13 +1,4 @@
 <script context="module">
-    import { browser } from '$app/env'
-    let client_device = "WEBSITE"
-    if(browser){
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            client_device = "MOBILE";
-        } else {
-            client_device = "WEBSITE";
-        }
-    }
     export const load = async ({ fetch,url }) => {
         // api/listkeluaran/index.js
         // api/listnews/index.js
@@ -89,7 +80,6 @@
         bukumimpi = record_bukumimpi.data
         return {
             props: {
-                client_device,
                 hostname_client,
                 listkeluaran,
                 listproviderslot,
@@ -106,14 +96,22 @@
     import imgdummy from '$lib/assets/placeholder.png';
     import Placholder from '../components/placholder.svelte';
     import Banner_top from '../components/banner_top.svelte';
-
-    export let client_device = "";
+    import { browser } from '$app/env'
+    
     export let hostname_client = "";
     export let listkeluaran = [];
     export let listproviderslot = [];
     export let listslotgacor = [];
     export let listnews = [];
     export let bukumimpi = [];
+    let client_device = "WEBSITE"
+    if(browser){
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            client_device = "MOBILE";
+        } else {
+            client_device = "WEBSITE";
+        }
+    }
     const loaded = new Map();
     let tafsirmimpi = [];
     let listnewsmovie = [];
@@ -513,7 +511,7 @@
 </svelte:head>
 {#if client_device == "WEBSITE"}
     <Banner_top />
-    <article class="grid grid-cols-2 w-full gap-2">
+    <article class="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
         <section class="w-full">
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
                 <div class="card-body p-2 mb-2">
@@ -920,7 +918,7 @@
                 </aside>
             </section>
         </section>
-        <section class="w-full">
+        <section class="hidden lg:w-full lg:inline-block">
             <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
                 <div class="card-body p-2 mb-2">
                     {#if listproviderslot != ""}
