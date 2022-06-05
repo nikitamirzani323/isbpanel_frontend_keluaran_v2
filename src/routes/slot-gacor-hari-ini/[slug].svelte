@@ -2,7 +2,7 @@
     import { MY_GO_PATH_SITE } from '$lib/Env';
     import { browser } from '$app/env'
     let path_site = MY_GO_PATH_SITE
-    let client_device = "WEBSITE"
+    let client_device = ""
     if(browser){
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             client_device = "MOBILE";
@@ -60,6 +60,9 @@
         })
         const record_listproviderslot = await res_listproviderslot.json();
         listproviderslot = record_listproviderslot.data
+
+        
+
         return { props: { 
             client_device,
             path_site,
@@ -112,28 +115,85 @@
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
 {#if client_device == "WEBSITE"}
-<Banner_top />
-<div class="text-sm breadcrumbs">
-    <ul>
-        <li><a href="/">Home</a></li> 
-        <li>Slot Gacor {providerslot_name}</li>
-    </ul>
-</div>
-<article class="flex justify-between w-full gap-2">
+    <Banner_top />
+    <div class="text-sm breadcrumbs">
+        <ul>
+            <li><a href="/">Home</a></li> 
+            <li>Slot Gacor {providerslot_name}</li>
+        </ul>
+    </div>
+    <article class="flex justify-between w-full gap-2">
+        <section class="w-full">
+            <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+                <div class="card-body p-2 mb-2">
+                    {#if listslotgacor != ""}
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini - {providerslot_name}</h2>
+                        <div class="grid grid-cols-4 gap-2 p-2">
+                            {#each listslotgacor as rec}
+                                <a 
+                                    class="flex flex-col justify-center items-center w-full gap-2 mb-5" 
+                                    href="https://146.190.4.188/" target="_blank">
+                                    <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
+                                    <h3 class="text-xs text-base-content -mt-2">{rec.prediksislot_name}</h3>
+                                    <div class="w-full bg-gray-200 rounded-full -mt-2">
+                                        <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-bold text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                            {rec.prediksislot_prediksi}%
+                                        </div>
+                                    </div>
+                                </a>
+                            {/each}
+                        </div>
+                    {:else}
+                        <Placholder total_placeholder={4} />
+                    {/if}
+                </div>
+            </aside>
+        </section>
+        <section class="w-1/2">
+            <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+                <div class="card-body p-2 mb-2">
+                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Daftar RTP Slot Gacor</h2>
+                    <ul class="p-2">
+                        {#each listproviderslot as rec}
+                            <li class="underline p-1">
+                                <a href="/slot-gacor-hari-ini/{rec.providerslot_slug}">{rec.providerslot_name}</a>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            </aside>
+        </section>
+    </article>
+{/if}
+{#if client_device == "MOBILE"}
+    <div class="text-sm breadcrumbs">
+        <ul>
+            <li class="text-xs"><a href="/">Home</a></li> 
+            <li class="text-xs">Slot Gacor {providerslot_name}</li>
+        </ul>
+    </div>
+    <section class="overflow-y-auto scrollbar-hide w-full my-2">
+        <ul class="flex items-center  w-full gap-1">
+            {#each listproviderslot as rec}
+                <li class="underline">
+                    <a class="text-[11px] btn btn-sm btn-outline btn-primary w-[120px]" href="/slot-gacor-hari-ini/{rec.providerslot_slug}">{rec.providerslot_name}</a>
+                </li>
+            {/each}
+        </ul>
+    </section>
     <section class="w-full">
         <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-            <div class="card-body p-2 mb-2">
+            <div class="card-body p-1 mb-2">
                 {#if listslotgacor != ""}
-                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini - {providerslot_name}</h2>
-                    <div class="grid grid-cols-4 gap-2 p-2">
+                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs">Slot Gacor Hari Ini - {providerslot_name}</h2>
+                    <div class="grid grid-cols-3 gap-2 ">
                         {#each listslotgacor as rec}
                             <a 
                                 class="flex flex-col justify-center items-center w-full gap-2 mb-5" 
                                 href="https://146.190.4.188/" target="_blank">
                                 <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
-                                <h3 class="text-xs text-base-content -mt-2">{rec.prediksislot_name}</h3>
-                                <div class="w-full bg-gray-200 rounded-full -mt-2">
-                                    <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                <div class="w-full bg-gray-200 rounded-full -mt-1">
+                                    <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-[11px] font-bold text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
                                         {rec.prediksislot_prediksi}%
                                     </div>
                                 </div>
@@ -146,51 +206,4 @@
             </div>
         </aside>
     </section>
-    <section class="w-1/2">
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-            <div class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Daftar RTP Slot Gacor</h2>
-                <ul class="p-2">
-                    {#each listproviderslot as rec}
-                        <li class="underline p-1">
-                            <a href="/slot-gacor-hari-ini/{rec.providerslot_slug}">{rec.providerslot_name}</a>
-                        </li>
-                    {/each}
-                </ul>
-            </div>
-        </aside>
-    </section>
-</article>
-{:else}
-<div class="text-sm breadcrumbs">
-    <ul>
-        <li><a href="/">Home</a></li> 
-        <li>Slot Gacor {providerslot_name}</li>
-    </ul>
-</div>
-<section class="w-full">
-    <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-        <div class="card-body p-2 mb-2">
-            {#if listslotgacor != ""}
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini - {providerslot_name}</h2>
-                <div class="grid grid-cols-2 gap-2 p-2">
-                    {#each listslotgacor as rec}
-                        <a 
-                            class="flex flex-col justify-center items-center w-full gap-2 mb-5" 
-                            href="https://146.190.4.188/" target="_blank">
-                            <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
-                            <div class="w-full bg-gray-200 rounded-full -mt-2">
-                                <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: {rec.prediksislot_prediksi}%"> 
-                                    {rec.prediksislot_prediksi}%
-                                </div>
-                            </div>
-                        </a>
-                    {/each}
-                </div>
-            {:else}
-                <Placholder total_placeholder={4} />
-            {/if}
-        </div>
-    </aside>
-</section>
 {/if}

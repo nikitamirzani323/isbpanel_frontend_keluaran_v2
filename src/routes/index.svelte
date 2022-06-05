@@ -1,4 +1,15 @@
 <script context="module">
+    import { browser } from '$app/env'
+    import { MY_GO_PATH_SITE } from '$lib/Env';
+    let path_site = MY_GO_PATH_SITE
+    let client_device = ""
+    if(browser){
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            client_device = "MOBILE";
+        } else {
+            client_device = "WEBSITE";
+        }
+    }
     export const load = async ({ fetch,url }) => {
         // api/listkeluaran/index.js
         // api/listnews/index.js
@@ -53,7 +64,7 @@
         })
         const record_listslotgacor = await res_listslotgacor.json();
         listslotgacor = record_listslotgacor.data
-
+        
         const res_listnews = await fetch("/api/listnews", {
             method: "POST",
             headers: {
@@ -66,20 +77,26 @@
         const record_listnews = await res_listnews.json();
         listnews = record_listnews.data
 
+        if(client_device == "WEBSITE"){
+            
+
+            const res_bukumimpi = await fetch("/api/bukumimpi", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    hostname:hostname_client
+                }),
+            })
+            const record_bukumimpi = await res_bukumimpi.json();
+            bukumimpi = record_bukumimpi.data
+        }
         
-        const res_bukumimpi = await fetch("/api/bukumimpi", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client
-            }),
-        })
-        const record_bukumimpi = await res_bukumimpi.json();
-        bukumimpi = record_bukumimpi.data
         return {
             props: {
+                path_site,
+                client_device,
                 hostname_client,
                 listkeluaran,
                 listproviderslot,
@@ -91,27 +108,19 @@
     };
 </script>
 <script>
-    import { MY_GO_PATH_SITE } from '$lib/Env';
-    
     import imgdummy from '$lib/assets/placeholder.png';
     import Placholder from '../components/placholder.svelte';
     import Banner_top from '../components/banner_top.svelte';
-    import { browser } from '$app/env'
     
+    export let path_site = "";
+    export let client_device = "";
     export let hostname_client = "";
     export let listkeluaran = [];
     export let listproviderslot = [];
     export let listslotgacor = [];
     export let listnews = [];
     export let bukumimpi = [];
-    let client_device = "WEBSITE"
-    if(browser){
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            client_device = "MOBILE";
-        } else {
-            client_device = "WEBSITE";
-        }
-    }
+    
     const loaded = new Map();
     let tafsirmimpi = [];
     let listnewsmovie = [];
@@ -494,17 +503,17 @@
     <title>Hasil Keluaran Togel / Berita Hari Ini</title>
     <meta name="description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
-    <meta name="author" content="{MY_GO_PATH_SITE}">
+    <meta name="author" content="{path_site}">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{MY_GO_PATH_SITE}">
+    <meta property="og:url" content="{path_site}">
     <meta property="og:title" content="Hasil Keluaran Togel / Berita Hari Ini">
     <meta property="og:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
     <meta property="og:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{MY_GO_PATH_SITE}">
+    <meta property="twitter:url" content="{path_site}">
     <meta property="twitter:title" content="Hasil Keluaran Togel / Berita Hari Ini">
     <meta property="twitter:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
@@ -871,7 +880,7 @@
                                     bind:value={searchbukumimpi} 
                                     on:keypress={handleKeyboardbukumimpi_checkenter}
                                     type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
-                                <div class="flex flex-col p-2 gap-2 h-[500px] scrollbar-hide overflow-auto">
+                                <div class="flex flex-col p-2 gap-2 h-[710px] scrollbar-hide overflow-auto">
                                     {#if filterBukuMimpi != ""}
                                         {#each filterBukuMimpi as rec}
                                             <div class="flex justify-start gap-4">
@@ -897,7 +906,7 @@
                                     bind:value={searchtafsirmimpi} 
                                     on:keypress={handleKeyboardtafsirmimpi_checkenter}
                                     type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
-                                <div class="flex flex-col p-2 gap-2 h-[550px] scrollbar-hide overflow-auto">
+                                <div class="flex flex-col p-2 gap-2 h-[755px] scrollbar-hide overflow-auto">
                                     {#if filterTafsirMimpi != ""}
                                         {#each filterTafsirMimpi as rec}
                                             <p class="text-sm">
@@ -947,7 +956,7 @@
                                     <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
                                     <h3 class="text-xs text-base-content">{rec.prediksislot_name}</h3>
                                     <div class="w-full bg-gray-200 rounded-full ">
-                                        <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                        <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
                                             {rec.prediksislot_prediksi}%
                                         </div>
                                     </div>
@@ -1026,8 +1035,9 @@
                 </aside>
             </section>
         </section>
-    </article>
-{:else}
+    </article>    
+{/if}
+{#if client_device == "MOBILE"}
     <section class="w-full">
         <aside class="tabs tabs-boxed mb-2">
             <a 
@@ -1045,7 +1055,7 @@
             {#if panel_mobile_keluarantogel}
                 <div class="card-body p-1 mb-2">
                     {#if listkeluaran != ""}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Keluaran Togel</h2>
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs">Keluaran Togel</h2>
                         <div class="overflow-x-auto">
                             <table class="table table-compact w-full">
                                 <thead>
@@ -1058,7 +1068,7 @@
                                 <tbody>
                                     {#each listkeluaran as rec}
                                         <tr>
-                                            <td class="text-xs text-left underline align-top">
+                                            <td class="text-[11px] text-left underline align-top">
                                                 <a href="{rec.pasaran_slug}">
                                                     {rec.pasaran_name}
                                                 </a>
@@ -1067,7 +1077,7 @@
                                                 {rec.pasaran_datekeluaran}  {convert_time(rec.pasaran_jamjadwal)}
                                             </td> 
                                             <td class="text-[11px] text-center align-top">
-                                                <span class="text-accent underline cursor-pointer">{rec.pasaran_keluaran}</span>
+                                                <span class="text-accent ">{rec.pasaran_keluaran}</span>
                                             </td>
                                         </tr>
                                     {/each}
@@ -1082,7 +1092,7 @@
             {#if panel_mobile_prediksitogel}
                 <div class="card-body p-1 mb-2">
                     {#if listkeluaran != ""}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Prediksi Togel</h2>
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs">Prediksi Togel</h2>
                         <div class="overflow-x-auto">
                             <table class="table table-compact w-full">
                                 <thead>
@@ -1115,10 +1125,19 @@
                 </div>
             {/if}
         </aside>
+        <section class="overflow-y-auto scrollbar-hide w-full my-2">
+            <ul class="flex items-center  w-full gap-1">
+                {#each listproviderslot as rec}
+                    <li class="underline">
+                        <a class="text-[11px] btn btn-sm btn-outline btn-primary w-[120px]" href="/slot-gacor-hari-ini/{rec.providerslot_slug}">{rec.providerslot_name}</a>
+                    </li>
+                {/each}
+            </ul>
+        </section>
         <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-1 mb-2">
                 {#if listslotgacor != ""}
-                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Slot Gacor Hari Ini</h2>
+                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs">Slot Gacor Hari Ini</h2>
                     <div class="grid grid-cols-3 gap-2 p-1">
                         {#each listslotgacor as rec}
                             <a 
@@ -1126,7 +1145,7 @@
                                 href="https://146.190.4.188/" target="_blank">
                                 <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
                                 <div class="w-full bg-gray-200 rounded-full ">
-                                    <div class="{rec.prediksislot_prediksi_class} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-l-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                    <div class="{rec.prediksislot_prediksi_class} animate-pulse text-[11px] font-medium text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
                                         {rec.prediksislot_prediksi}%
                                     </div>
                                 </div>
@@ -1389,7 +1408,7 @@
             {#if panel_mobile_news}
                 <div class="card-body p-1 mb-2">
                     {#if listnews != ""}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Berita Hari Ini</h2>
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs">Berita Hari Ini</h2>
                         <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">  
                             {#each listnews as rec}
                                 <a href="{rec.news_url}" target="_blank">
@@ -1415,7 +1434,7 @@
             {#if panel_mobile_newsmovie}
                 <div class="card-body p-1 mb-2">
                     {#if listnewsmovie != ""}
-                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Movie Minggu Ini</h2>
+                        <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs">Movie Minggu Ini</h2>
                         <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
                             {#each listnewsmovie as rec}
                                 <a href="{rec.news_url}" target="_blank">
