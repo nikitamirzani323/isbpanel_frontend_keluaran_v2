@@ -1,4 +1,4 @@
-<script>
+<script> 
     import "../tailwind.css";
     import Nav from "../components/navbar.svelte"
     import Footer from "../components/footer.svelte"

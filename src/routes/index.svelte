@@ -84,7 +84,6 @@
         return {
             props: {
                 path_site,
-                client_device,
                 hostname_client,
                 listkeluaran,
                 listproviderslot,
@@ -101,7 +100,6 @@
     import Banner_top from '../components/banner_top.svelte';
     
     export let path_site = "";
-    export let client_device = "";
     export let hostname_client = "";
     export let listkeluaran = [];
     export let listproviderslot = [];
@@ -507,9 +505,9 @@
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
 <Banner_top />
-<article class="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
-    <section class="w-full">
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+<article class="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row  justify-items-stretch w-full gap-2">
+    <article class="w-full">
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
                 {#if listkeluaran != ""}
                     <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h2>
@@ -528,15 +526,15 @@
                                 {#each listkeluaran as rec}
                                     <tr>
                                         <td class="text-[11px] lg:text-sm text-left underline">
-                                            <a href="{rec.pasaran_slug}">
+                                            <a sveltekit:prefetch href="{rec.pasaran_slug}">
                                                 {rec.pasaran_name}
                                             </a>
                                         </td> 
                                         <td class="text-[11px] lg:text-sm text-center">{rec.pasaran_datekeluaran}</td> 
                                         <td class="hidden lg:block lg:text-sm  text-left">{rec.pasaran_diundi}</td> 
-                                        <td class="text-[11px] text-center">{convert_time(rec.pasaran_jamjadwal)}</td> 
-                                        <td class="text-[11px] text-center">
-                                            <span class="text-accent underline cursor-pointer">{rec.pasaran_keluaran}</span>
+                                        <td class="text-[11px] lg:text-sm text-center">{convert_time(rec.pasaran_jamjadwal)}</td> 
+                                        <td class="text-[11px] lg:text-sm text-center">
+                                            <span class="text-accent">{rec.pasaran_keluaran}</span>
                                         </td>
                                     </tr>
                                 {/each}
@@ -547,8 +545,8 @@
                     <Placholder total_placeholder={4} />
                 {/if}
             </div>
-        </aside>
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+        </section>
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
                 {#if listkeluaran != ""}
                     <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Prediksi Togel</h2>
@@ -582,27 +580,27 @@
                     <Placholder total_placeholder={4} />
                 {/if}
             </div>
-        </aside>
+        </section>
         <section class="mb-4">
-            <aside class="tabs tabs-boxed mb-2">
-                <a 
+            <section class="tabs tabs-boxed mb-2">
+                <span 
                     on:click={() => {
                         handleTabOne("tab_1_1");
                     }}
-                    class="tab {tab_1_1} text-xs lg:text-sm">Angka Main</a> 
-                <a 
+                    class="tab {tab_1_1} text-xs lg:text-sm">Angka Main</span> 
+                <span 
                     on:click={() => {
                         handleTabOne("tab_1_2");
                     }}
-                    class="tab {tab_1_2} text-xs lg:text-sm">Table Shio</a>
-                <a 
+                    class="tab {tab_1_2} text-xs lg:text-sm">Table Shio</span>
+                <span 
                     on:click={() => {
                         handleTabOne("tab_1_3");
                     }}
-                    class="tab {tab_1_3} text-xs lg:text-sm">Table Tyesen</a>
-            </aside>
+                    class="tab {tab_1_3} text-xs lg:text-sm">Table Tyesen</span>
+            </section>
             {#if panel_1_1}
-                <aside class="card w-full bg-accent shadow-xl text-neutral-content rounded-md">
+                <section class="card w-full bg-accent shadow-xl text-neutral-content rounded-md">
                     <div class="card-body p-2 mb-2">
                         <div class="overflow-x-auto">
                             <table class="table table-compact w-full">
@@ -661,10 +659,10 @@
                             </table>
                         </div>
                     </div>
-                </aside>
+                </section>
             {/if}
             {#if panel_1_2}
-                <aside class="card w-full bg-accent shadow-xl text-neutral-content rounded-md">
+                <section class="card w-full bg-accent shadow-xl text-neutral-content rounded-md">
                     <div class="card-body p-2 mb-2 bg-accent rounded-none">
                         <div class="overflow-x-auto">
                             <table class="table table-compact w-full">
@@ -691,10 +689,10 @@
                             </table>
                         </div>
                     </div>
-                </aside>
+                </section>
             {/if}
             {#if panel_1_3}
-                <aside class="card w-full bg-accent shadow-xl text-neutral-content rounded-md">
+                <section class="card w-full bg-accent shadow-xl text-neutral-content rounded-md">
                     <div class="card-body p-2 mb-2 ">
                         <div class="overflow-x-auto">
                             <table class="table table-compact w-full">
@@ -815,53 +813,53 @@
                             </table>
                         </div>
                     </div>
-                </aside>
+                </section>
             {/if}
         </section>
         <section class="hidden lg:block mt-2">
-            <aside class="tabs tabs-boxed mb-2">
-                <a 
+            <section class="tabs tabs-boxed mb-2">
+                <span 
                     on:click={() => {
                         handleGroupBookDream("bukumimpi");
                     }}
-                    class="tab {tab_groupbookdream_bukumimpi} text-xs lg:text-sm">Buku Mimpi</a> 
-                <a 
+                    class="tab {tab_groupbookdream_bukumimpi} text-xs lg:text-sm">Buku Mimpi</span> 
+                <span 
                     on:click={() => {
                         handleGroupBookDream("tafsirmimpi");
                     }}
-                    class="tab {tab_groupbookdream_tafsirmimpi} text-xs lg:text-sm">Tafsir Mimpi</a> 
-                <a 
+                    class="tab {tab_groupbookdream_tafsirmimpi} text-xs lg:text-sm">Tafsir Mimpi</span> 
+                <span 
                     on:click={() => {
                         handleGroupBookDream("bbfs");
                     }}
-                    class="tab {tab_groupbookdream_bbfs} text-xs lg:text-sm">BBFS</a>
-            </aside>
-            <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md">
+                    class="tab {tab_groupbookdream_bbfs} text-xs lg:text-sm">BBFS</span>
+            </section>
+            <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md">
                 <div class="card-body p-2 mb-2 ">
                     {#if panel_groupbookdream_bukumimpi}
                         <div class="flex flex-col gap-2">
-                            <aside class="tabs tabs-boxed">
-                                <a 
+                            <section class="tabs tabs-boxed">
+                                <span 
                                     on:click={() => {
                                         handleClickBukuMimpi("ALL");
                                     }}
-                                    class="tab {tab_bukumimpi_all}">All</a> 
-                                <a 
+                                    class="tab {tab_bukumimpi_all} text-xs lg:text-sm">All</span> 
+                                <span 
                                     on:click={() => {
                                         handleClickBukuMimpi("4D");
                                     }}
-                                    class="tab {tab_bukumimpi_4d}">4D</a> 
-                                <a 
+                                    class="tab {tab_bukumimpi_4d} text-xs lg:text-sm">4D</span> 
+                                <span 
                                     on:click={() => {
                                         handleClickBukuMimpi("3D");
                                     }}
-                                    class="tab {tab_bukumimpi_3d}">3D</a>
-                                <a 
+                                    class="tab {tab_bukumimpi_3d} text-xs lg:text-sm">3D</span>
+                                <span 
                                     on:click={() => {
                                         handleClickBukuMimpi("2D");
                                     }}
-                                    class="tab {tab_bukumimpi_2d}">2D</a>
-                            </aside>
+                                    class="tab {tab_bukumimpi_2d} ">2D</span>
+                            </section>
                             <input
                                 bind:value={searchbukumimpi} 
                                 on:keypress={handleKeyboardbukumimpi_checkenter}
@@ -869,19 +867,19 @@
                             <div class="flex flex-col p-2 gap-2 h-[635px] scrollbar-hide overflow-auto">
                                 {#if filterBukuMimpi != ""}
                                     {#each filterBukuMimpi as rec}
-                                        <div class="flex justify-start gap-4">
-                                            <div class="text-accent text-sm self-center">
+                                        <div class="flex justify-start gap-4 border-b-2 border-base-100">
+                                            <div class="text-accent text-xs lg:text-sm self-center">
                                                 {rec.bukumimpi_type}
                                             </div>
-                                            <p class="text-sm">
+                                            <p class="text-xs lg:text-sm">
                                                 {rec.bukumimpi_name}
                                                 <br>
-                                                <span class="text-accent text-sm">{rec.bukumimpi_nomor}</span>
+                                                <span class="text-accent text-xs lg:text-sm">{rec.bukumimpi_nomor}</span>
                                             </p>
                                         </div>
                                     {/each}
                                 {:else}
-                                    <Placholder total_placeholder={6} />
+                                    <Placholder total_placeholder={8} />
                                 {/if}
                             </div>
                         </div>
@@ -895,7 +893,7 @@
                             <div class="flex flex-col p-2 gap-2 h-[685px] scrollbar-hide overflow-auto">
                                 {#if filterTafsirMimpi != ""}
                                     {#each filterTafsirMimpi as rec}
-                                        <p class="text-sm">
+                                        <p class="text-xs lg:text-sm border-b-2 border-base-100 p-2">
                                             {rec.tafsirmimpi_artimimpi}
                                             <br>
                                             2D : <span class="text-accent text-sm">{rec.tafsirmimpi_angka2d}</span><br>
@@ -904,88 +902,88 @@
                                         </p>
                                     {/each}
                                 {:else}
-                                    <Placholder total_placeholder={7} />
+                                    <Placholder total_placeholder={8} />
                                 {/if}
                             </div>
                         </div>
                     {/if}
                 </div>
-            </aside>
+            </section>
         </section>
-    </section>
-    <section class="w-full">
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-            <div class="card-body p-2 mb-2">
+    </article>
+    <aside class="w-full">
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+            <section class="card-body p-2 mb-2">
                 {#if listproviderslot != ""}
                     <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Daftar RTP Slot Gacor</h2>
                     <section class="lg:hidden overflow-y-auto scrollbar-hide w-full my-2">
                         <ul class="flex items-center  w-full gap-1">
                             {#each listproviderslot as rec}
                             <li class="underline">
-                                <a class="text-[11px] btn btn-sm btn-outline btn-primary w-[120px]" href="/slot-gacor-hari-ini/{rec.providerslot_slug}">{rec.providerslot_name}</a>
+                                <a class="text-[11px] btn btn-sm btn-outline btn-primary w-[120px]" sveltekit:prefetch href="/slot-gacor-hari-ini/{rec.providerslot_slug}">{rec.providerslot_name}</a>
                             </li>
                             {/each}
                         </ul>
                     </section>
-                    <div class="hidden lg:grid grid-cols-3 gap-2 p-2">
+                    <section class="hidden lg:grid grid-cols-3 gap-2 p-2">
                         {#each listproviderslot as rec}
-                            <a class="btn btn-sm btn-outline btn-primary" href="/slot-gacor-hari-ini/{rec.providerslot_slug}">
+                            <a class="btn btn-sm btn-outline btn-primary" sveltekit:prefetch href="/slot-gacor-hari-ini/{rec.providerslot_slug}">
                                 {rec.providerslot_name}
                             </a>
                         {/each}
-                    </div>
+                    </section>
                 {:else}
                     <Placholder total_placeholder={4} />
                 {/if}
-            </div>
-        </aside>
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+            </section>
+        </section>
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
                 {#if listslotgacor != ""}
                     <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Slot Gacor Hari Ini</h2>
-                    <div class="grid grid-cols-3 gap-2 p-2">
+                    <section class="grid grid-cols-3 gap-2 p-2">
                         {#each listslotgacor as rec}
                             <a 
                                 class="flex flex-col justify-center items-center w-full gap-2 mb-2" 
                                 href="https://146.190.4.188/" target="_blank">
                                 <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
                                 <h3 class="hidden lg:block text-xs text-base-content">{rec.prediksislot_name}</h3>
-                                <div class="w-full bg-gray-200 rounded-full ">
-                                    <div class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                <section class="w-full bg-gray-200 rounded-full ">
+                                    <section class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
                                         {rec.prediksislot_prediksi}%
-                                    </div>
-                                </div>
+                                    </section>
+                                </section>
                             </a>
                         {/each}
-                    </div>
+                    </section>
                 {:else}
                     <Placholder total_placeholder={4} />
                 {/if}
             </div>
-        </aside>
+        </section>
         <section class="mb-4">
-            <aside class="tabs tabs-boxed mb-2">
-                <a 
+            <section class="tabs tabs-boxed mb-2">
+                <span 
                     on:click={() => {
                         handleTabNews("newsberita");
                     }}
-                    class="tab {tab_newsberita} text-xs lg:text-sm">Berita Hari Ini</a> 
-                <a 
+                    class="tab {tab_newsberita} text-xs lg:text-sm">Berita Hari Ini</span> 
+                <span 
                     on:click={() => {
                         handleTabNews("newsmovie");
                     }}
-                    class="tab {tab_newsmovie} text-xs lg:text-sm">Movie Hari Ini</a>
-            </aside>
-            <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md ">
-                <aside class="card-body p-2 mb-2">
+                    class="tab {tab_newsmovie} text-xs lg:text-sm">Movie Hari Ini</span>
+            </section>
+            <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md ">
+                <section class="card-body p-2 mb-2">
                     {#if panel_newberita}
                         {#if listnews != ""}
                             <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Berita Hari Ini</h2>
-                            <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">  
+                            <section class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">  
                                 {#each listnews as rec}
                                     <a href="{rec.news_url}" target="_blank">
-                                        <div class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
-                                            <div class="card-body p-2 mb-2">
+                                        <section class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
+                                            <section class="card-body p-2 mb-2">
                                                 <img class="w-full h-1/2" 
                                                     use:lazy="{{src: rec.news_image}}" 
                                                     src="{imgdummy}" alt="{rec.news_title}">
@@ -993,11 +991,11 @@
                                                 <p class="text-[11px] lg:text-sm text-base-content/70">
                                                     {rec.news_descp}
                                                 </p>
-                                            </div>
-                                        </div>
+                                            </section>
+                                        </section>
                                     </a>
                                 {/each}
-                            </div>
+                            </section>
                         {:else}
                             <Placholder total_placeholder={10} />
                         {/if}
@@ -1005,11 +1003,11 @@
                     {#if panel_newmovie}
                         {#if listnewsmovie != ""}
                             <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Movie Minggu Ini</h2>
-                            <div class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
+                            <section class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
                                 {#each listnewsmovie as rec}
                                     <a href="{rec.news_url}" target="_blank">
-                                        <div class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
-                                            <div class="card-body p-2 mb-2">
+                                        <section class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
+                                            <section class="card-body p-2 mb-2">
                                                 <img class="w-full h-1/2" 
                                                     use:lazy="{{src: rec.news_image}}" 
                                                     src="{imgdummy}" alt="{rec.news_title}">
@@ -1017,17 +1015,17 @@
                                                 <p class="text-[11px] lg:text-sm text-base-content/70">
                                                     {rec.news_descp}
                                                 </p>
-                                            </div>
-                                        </div>
+                                            </section>
+                                        </section>
                                     </a>
                                 {/each}
-                            </div>
+                            </section>
                         {:else}
                             <Placholder total_placeholder={10} />
                         {/if}
                     {/if}
-                </aside>
-            </aside>
+                </section>
+            </section>
         </section>
-    </section>
+    </aside>
 </article>   

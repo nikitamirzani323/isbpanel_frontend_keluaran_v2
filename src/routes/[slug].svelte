@@ -71,7 +71,6 @@
   
 <script>
     import Banner_top from '../components/banner_top.svelte';
-    export let client_device = "";
     export let path_site = "";
     export let listkeluaran = [];
     export let listpasaran = [];
@@ -132,36 +131,35 @@
     <meta property="twitter:description" content="{pasaran_descp}">
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
-{#if client_device == "WEBSITE"}
 <Banner_top />
-<div class="text-sm breadcrumbs">
+<section class="text-sm breadcrumbs">
     <ul>
       <li><a href="/">Home</a></li> 
       <li>Keluaran Togel {capitalize(pasaran_nama)}</li>
     </ul>
-</div>
-<article class="flex justify-between w-full gap-2">
+</section>
+<article class="lg:flex justify-between w-full gap-2">
     <section class="w-full">
-        <aside class="tabs tabs-boxed mb-2">
-            <a 
+        <section class="tabs tabs-boxed mb-2">
+            <span 
                 on:click={() => {
                     handleTabTogel("resulttogel");
                 }}
                 class="tab {tab_resultogel}">
                 <h2>Hasil Keluaran Togel {capitalize(pasaran_nama)}</h2>
-            </a> 
-            <a 
+            </span> 
+            <span
                 on:click={() => {
                     handleTabTogel("paitotogel");
                 }}
                 class="tab {tab_paitotogel}">
                 <h2>Paito {capitalize(pasaran_nama)}</h2>
-            </a>
-        </aside>
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-            <div class="card-body p-2 mb-2">
+            </span>
+        </section>
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+            <section class="card-body p-2 mb-2">
                 {#if panel_resultogel}
-                    <div class="overflow-x-auto">
+                    <section class="overflow-x-auto">
                         <table class="table table-compact w-full">
                             <thead>
                                 <tr>
@@ -182,10 +180,10 @@
                                 {/each}
                             </tbody> 
                         </table>
-                    </div>
+                    </section>
                 {/if}
                 {#if panel_paitotogel}
-                    <div class="overflow-x-auto">
+                    <section class="overflow-x-auto">
                         <table class="table table-compact w-full">
                             <thead>
                                 <tr>
@@ -238,145 +236,35 @@
                                 </tr>
                             </tbody> 
                         </table>
-                    </div>
+                    </section>
                 {/if}
-            </div>
-        </aside>
+            </section>
+        </section>
     </section>
-    <section class="w-1/2">
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-            <div class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Keluaran Togel</h2>
-                <ul class="p-2">
+    <aside class="w-full lg:w-1/2">
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+            <section class="card-body p-2 mb-2">
+                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h2>
+                <ul class="p-1">
                     {#each listpasaran as rec}
-                        <li class="underline p-1">
-                            <a href="/{rec.pasaran_slug}">Keluaran Togel {capitalize(rec.pasaran_name)}</a>
+                        <li class="underline p-1 text-xs lg:text-sm">
+                            <a sveltekit:prefetch href="/{rec.pasaran_slug}">Keluaran Togel {capitalize(rec.pasaran_name)}</a>
                         </li>
                     {/each}
                 </ul>
-            </div>
-        </aside>
-        <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-            <div class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-sm">Livedraw Togel</h2>
-                <ul class="p-2">
+            </section>
+        </section>
+        <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
+            <section class="card-body p-2 mb-2">
+                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Livedraw Togel</h2>
+                <ul class="p-1">
                     {#each listpasaran as rec}
-                        <li class="underline p-1">
+                        <li class="underline p-1 text-xs lg:text-sm">
                             <a href="{rec.pasaran_url}" target="_blank">Livedraw Togel {capitalize(rec.pasaran_name)}</a>
                         </li>
                     {/each}
                 </ul>
-            </div>
-        </aside>
-    </section>
+            </section>
+        </section>
+    </aside>
 </article>
-{:else}
-<div class="text-sm breadcrumbs">
-    <ul>
-      <li><a href="/" class="text-[11px]">Home</a></li> 
-      <li class="text-[11px]">Keluaran Togel {capitalize(pasaran_nama)}</li>
-    </ul>
-</div>
-<section class="w-full">
-    <aside class="tabs tabs-boxed mb-2 p-1 m-0">
-        <a 
-            on:click={() => {
-                handleTabTogel("resulttogel");
-            }}
-            class="tab {tab_resultogel}">
-            <h2 class="text-xs">Keluaran {capitalize(pasaran_nama)}</h2>
-        </a> 
-        <a 
-            on:click={() => {
-                handleTabTogel("paitotogel");
-            }}
-            class="tab {tab_paitotogel}">
-            <h2 class="text-xs">Paito {capitalize(pasaran_nama)}</h2>
-        </a>
-    </aside>
-    <aside class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
-        <div class="card-body p-1 mb-2">
-            {#if panel_resultogel}
-                <div class="overflow-x-auto">
-                    <table class="table table-compact w-full">
-                        <thead>
-                            <tr>
-                                <th class="text-[11px] text-center">TANGGAL</th> 
-                                <th class="text-[11px] text-center">PERIODE</th> 
-                                <th class="text-[11px] text-center">KELUARAN</th>
-                            </tr>
-                        </thead> 
-                        <tbody>
-                            {#each listkeluaran as rec}
-                                <tr>
-                                    <td class="text-[11px] text-center">{rec.keluaran_datekeluaran}</td> 
-                                    <td class="text-[11px] text-center">{rec.keluaran_periode}</td> 
-                                    <td class="text-[11px] text-center">
-                                        <span class="text-accent">{rec.keluaran_nomor}</span>
-                                    </td>
-                                </tr>
-                            {/each}
-                        </tbody> 
-                    </table>
-                </div>
-            {/if}
-            {#if panel_paitotogel}
-                <div class="overflow-x-auto">
-                    <table class="table table-compact w-full">
-                        <thead>
-                            <tr>
-                                <th class="text-[11px] text-center">MINGGU</th> 
-                                <th class="text-[11px] text-center">SENIN</th> 
-                                <th class="text-[11px] text-center">SELASA</th> 
-                                <th class="text-[11px] text-center">RABU</th> 
-                                <th class="text-[11px] text-center">KAMIS</th>
-                                <th class="text-[11px] text-center">JUMAT</th>
-                                <th class="text-[11px] text-center">SABTU</th>
-                            </tr>
-                        </thead> 
-                        <tbody>
-                            <tr>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_minggu as rec }
-                                        <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_senin as rec }
-                                    <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_selasa as rec }
-                                    <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_rabu as rec }
-                                    <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_kamis as rec }
-                                    <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_jumat as rec }
-                                    <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                                <td class="text-[11px] text-center align-top">
-                                    {#each paito_sabtu as rec }
-                                    <span class="text-accent">{rec.keluaran_nomor}</span><br>
-                                    {/each}
-                                </td>
-                            </tr>
-                        </tbody> 
-                    </table>
-                </div>
-            {/if}
-        </div>
-    </aside>
-</section>
-{/if}
