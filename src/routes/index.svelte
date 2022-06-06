@@ -512,7 +512,7 @@
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
                 {#if listkeluaran != ""}
-                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h2>
+                    <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h1>
                     <div class="overflow-x-auto">
                         <table class="table table-compact w-full">
                             <thead>
@@ -917,7 +917,7 @@
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <section class="card-body p-2 mb-2">
                 {#if listproviderslot != ""}
-                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Daftar RTP Slot Gacor</h2>
+                    <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Daftar RTP Slot Gacor</h1>
                     <section class="lg:hidden overflow-y-auto scrollbar-hide w-full my-2">
                         <ul class="flex items-center  w-full gap-1">
                             {#each listproviderslot as rec}
@@ -942,7 +942,7 @@
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
                 {#if listslotgacor != ""}
-                    <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Slot Gacor Hari Ini</h2>
+                    <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Slot Gacor Hari Ini</h1>
                     <section class="grid grid-cols-3 gap-2 p-2">
                         {#each listslotgacor as rec}
                             <a 
@@ -980,7 +980,7 @@
                 <section class="card-body p-2 mb-2">
                     {#if panel_newberita}
                         {#if listnews != ""}
-                            <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Berita Hari Ini</h2>
+                            <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Berita Hari Ini</h1>
                             <section class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">  
                                 {#each listnews as rec}
                                     <a href="{rec.news_url}" target="_blank">
@@ -1004,7 +1004,7 @@
                     {/if}
                     {#if panel_newmovie}
                         {#if listnewsmovie != ""}
-                            <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Movie Minggu Ini</h2>
+                            <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Movie Minggu Ini</h1>
                             <section class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
                                 {#each listnewsmovie as rec}
                                     <a href="{rec.news_url}" target="_blank">

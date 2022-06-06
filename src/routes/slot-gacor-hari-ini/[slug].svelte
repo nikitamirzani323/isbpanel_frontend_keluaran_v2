@@ -114,7 +114,7 @@
     <section class="w-full lg:order-2 lg:w-1/3">
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <section class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Daftar RTP Slot Gacor</h2>
+                <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Daftar RTP Slot Gacor</h1>
                 <section class="lg:hidden overflow-y-auto scrollbar-hide w-full my-2">
                     <ul class="flex items-center  w-full gap-1">
                         {#each listproviderslot as rec}

@@ -136,8 +136,8 @@
 <Banner_top />
 <section class="text-sm breadcrumbs">
     <ul>
-      <li><a href="/">Home</a></li> 
-      <li>Keluaran Togel {capitalize(pasaran_nama)}</li>
+      <li class="text-xs lg:text-sm"><a href="/">Home</a></li> 
+      <li class="text-xs lg:text-sm">Keluaran Togel {capitalize(pasaran_nama)}</li>
     </ul>
 </section>
 <article class="lg:flex justify-between w-full gap-2">
@@ -246,7 +246,7 @@
     <aside class="w-full lg:w-1/2">
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <section class="card-body p-2 mb-2">
-                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h2>
+                <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h1>
                 <ul class="p-1">
                     {#each listpasaran as rec}
                         <li class="underline p-1 text-xs lg:text-sm">
