@@ -4,7 +4,6 @@ export async function post({request}){
     const object =  await request.json();
     const hostname = object.hostname
     const keluaran_id = object.keluaran_id
-    console.log(keluaran_id)
     const resdata = await fetch(path_api+"api/keluaran", {
         method: "POST",
         headers: {

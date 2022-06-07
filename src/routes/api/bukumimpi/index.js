@@ -5,7 +5,6 @@ export async function post({request}){
     const hostname = object.hostname
     const bukumimpi_nama = object.bukumimpi_nama
     const bukumimpi_tipe = object.bukumimpi_tipe
-    console.log(hostname)
     const resdata = await fetch(path_api+"api/bukumimpi", {
         method: "POST",
         headers: {

@@ -2,8 +2,6 @@
     import { MY_GO_PATH_SITE } from '$lib/Env';
     let path_site = MY_GO_PATH_SITE
     export const load = async ({ params,url }) => {
-        // api/listproviderslotdetail/index.js
-        // api/keluarantogel/index.js
         let providerslot_name = ""
         let providerslot_title = ""
         let providerslot_descp = ""

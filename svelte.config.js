@@ -9,7 +9,7 @@ const config = {
 			out: 'build',
 			precompress: false,
 			envPrefix: ''
-		  })
+		})
 	},
 	preprocess: [
 		preprocess({

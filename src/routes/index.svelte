@@ -1,74 +1,53 @@
 <script context="module">
-    import { browser } from '$app/env'
     import { MY_GO_PATH_SITE } from '$lib/Env';
     let path_site = MY_GO_PATH_SITE
-    let client_device = ""
-    if(browser){
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            client_device = "MOBILE";
-        } else {
-            client_device = "WEBSITE";
-        }
-    }
-    export const load = async ({ fetch,url }) => {
+   
+    export const load = async ({ fetch,url}) => {
         let hostname_client = url.host
         let listkeluaran = [];
         let listnews = [];
         let listproviderslot = [];
         let listslotgacor = [];
-        let bukumimpi = [];
         let limit = 9
-        const res_listkeluaran = await fetch("/api/listkeluaran", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client
+        const [res_listkeluaran, res_listproviderslot, res_listslotgacor, res_listnews] = await Promise.all([
+            fetch("/api/listkeluaran", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    hostname:hostname_client
+                }),
             }),
-        })
-        const record_listkeluaran = await res_listkeluaran.json();
-        listkeluaran = record_listkeluaran.data
-
-        const res_listproviderslot = await fetch("/api/listproviderslot", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client
+            fetch("/api/listproviderslot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    hostname:hostname_client
+                }),
             }),
-        })
-        const record_listproviderslot = await res_listproviderslot.json();
-        listproviderslot = record_listproviderslot.data
-
-        const res_listslotgacor = await fetch("/api/listslotgacor", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client,
-                limit:limit,
+            fetch("/api/listslotgacor", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    hostname:hostname_client,
+                    limit:limit,
+                }),
             }),
-        })
-        const record_listslotgacor = await res_listslotgacor.json();
-        listslotgacor = record_listslotgacor.data
-        
-        const res_listnews = await fetch("/api/listnews", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client
+            fetch("/api/listnews", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    hostname:hostname_client
+                }),
             }),
-        })
-        const record_listnews = await res_listnews.json();
-        listnews = record_listnews.data
-
-        if(client_device == "WEBSITE"){
-            const res_bukumimpi = await fetch("/api/bukumimpi", {
+            fetch("/api/bukumimpi", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -77,9 +56,24 @@
                     hostname:hostname_client
                 }),
             })
-            const record_bukumimpi = await res_bukumimpi.json();
-            bukumimpi = record_bukumimpi.data
-        }
+        ]);
+
+        const record_listkeluaran = await res_listkeluaran.json();
+        listkeluaran = record_listkeluaran.data
+
+       
+        const record_listproviderslot = await res_listproviderslot.json();
+        listproviderslot = record_listproviderslot.data
+
+      
+        const record_listslotgacor = await res_listslotgacor.json();
+        listslotgacor = record_listslotgacor.data
+        
+        
+        const record_listnews = await res_listnews.json();
+        listnews = record_listnews.data
+
+        
         
         return {
             props: {
@@ -89,12 +83,13 @@
                 listproviderslot,
                 listslotgacor,
                 listnews,
-                bukumimpi,
             }
         }
     };
 </script>
 <script>
+    import {fade} from "svelte/transition";
+    import { flip } from 'svelte/animate';
     import imgdummy from '$lib/assets/placeholder.png';
     import Placholder from '../components/placholder.svelte';
     import Banner_top from '../components/banner_top.svelte';
@@ -105,12 +100,15 @@
     export let listproviderslot = [];
     export let listslotgacor = [];
     export let listnews = [];
-    export let bukumimpi = [];
     
     const loaded = new Map();
     let tafsirmimpi = [];
+    let bukumimpi = [];
     let listnewsmovie = [];
     let tipe_bukumimpi = "";
+    let listbbfs_4d = [];
+    let listbbfs_3d = [];
+    let listbbfs_2d = [];
     let filterBukuMimpi = [];
     let filterTafsirMimpi = [];
     let searchbukumimpi = "";
@@ -126,7 +124,7 @@
     let tab_groupbookdream_bbfs = ""
     let panel_groupbookdream_bukumimpi = true
     let panel_groupbookdream_tafsirmimpi = false
-    let panel_groupbookdream_bfs = false
+    let panel_groupbookdream_bbfs = false
     let tab_bukumimpi_all = "tab-active"
     let tab_bukumimpi_4d = ""
     let tab_bukumimpi_3d = ""
@@ -135,12 +133,12 @@
     let tab_newsmovie = ""
     let panel_newberita = true
     let panel_newmovie = false
-    let tab_mobile_keluarantogel = "tab-active"
-    let tab_mobile_prediksitogel = ""
-    let panel_mobile_keluarantogel = true
-    let panel_mobile_prediksitogel = false
-    let tab_mobile_news = "tab-active"
-    let tab_mobile_newsmovie = ""
+    let tab_bbfs_4d = "tab-active"
+    let tab_bbfs_3d = ""
+    let tab_bbfs_2d = ""
+    let panel_bbfs_4d = true
+    let panel_bbfs_3d = false
+    let panel_bbfs_2d = false
     let panel_mobile_news = true
     let panel_mobile_newsmovie = false
     
@@ -189,36 +187,31 @@
                 break;
         }
     };
-    const handleTabMobile_1 = (e) => {
+    const handleTabBBFS = (e) => {
         switch(e){
-            case "tab_mobile_keluarantogel":
-                tab_mobile_keluarantogel = "tab-active"
-                tab_mobile_prediksitogel = ""
-                panel_mobile_keluarantogel = true
-                panel_mobile_prediksitogel = false
+            case "4D":
+                tab_bbfs_4d = "tab-active"
+                tab_bbfs_3d = ""
+                tab_bbfs_2d = ""
+                panel_bbfs_4d = true
+                panel_bbfs_3d = false
+                panel_bbfs_2d = false
                 break;
-            case "tab_mobile_prediksitogel":
-                tab_mobile_keluarantogel = ""
-                tab_mobile_prediksitogel = "tab-active"
-                panel_mobile_keluarantogel = false
-                panel_mobile_prediksitogel = true
+            case "3D":
+                tab_bbfs_4d = ""
+                tab_bbfs_3d = "tab-active"
+                tab_bbfs_2d = ""
+                panel_bbfs_4d = false
+                panel_bbfs_3d = true
+                panel_bbfs_2d = false
                 break;
-        }
-    };
-    const handleTabMobile_2 = (e) => {
-        switch(e){
-            case "tab_mobile_news":
-                tab_mobile_news = "tab-active"
-                tab_mobile_newsmovie = ""
-                panel_mobile_news = true
-                panel_mobile_newsmovie = false
-                break;
-            case "tab_mobile_newsmovie":
-                postmovienews()
-                tab_mobile_news = ""
-                tab_mobile_newsmovie = "tab-active"
-                panel_mobile_news = false
-                panel_mobile_newsmovie = true
+            case "2D":
+                tab_bbfs_4d = ""
+                tab_bbfs_3d = ""
+                tab_bbfs_2d = "tab-active"
+                panel_bbfs_4d = false
+                panel_bbfs_3d = false
+                panel_bbfs_2d = true
                 break;
         }
     };
@@ -283,10 +276,10 @@
 			destroy(){} // noop
 		};
 	}
-    async function postbukumimpi(){
+    async function fetch_bukumimpi(){
         filterBukuMimpi = [];
         bukumimpi = [];
-        const resdata = await fetch("/api/bukumimpi", {
+        const resdata = await fetch(path_site+"api/bukumimpi", {
             method: "POST",
             body: JSON.stringify({
                 hostname: hostname_client,
@@ -302,17 +295,17 @@
             let record = jsondata.data;
             for (var i = 0; i < record.length; i++) {
                 bukumimpi = [
-                ...bukumimpi,
-                {
-                    bukumimpi_type: record[i]["bukumimpi_type"],
-                    bukumimpi_name: record[i]["bukumimpi_name"],
-                    bukumimpi_nomor: record[i]["bukumimpi_nomor"],
-                },
+                    ...bukumimpi,
+                    {
+                        bukumimpi_type: record[i]["bukumimpi_type"],
+                        bukumimpi_name: record[i]["bukumimpi_name"],
+                        bukumimpi_nomor: record[i]["bukumimpi_nomor"],
+                    },
                 ];
             }
 		}
     }
-    async function posttafsirmimpi(){
+    async function fetch_tafsirmimpi(){
         filterTafsirMimpi = [];
         tafsirmimpi = [];
         const resdata = await fetch("/api/tafsirmimpi", {
@@ -379,8 +372,8 @@
                 tab_groupbookdream_bbfs = ""
                 panel_groupbookdream_bukumimpi = true
                 panel_groupbookdream_tafsirmimpi = false
-                panel_groupbookdream_bfs = false
-                postbukumimpi();
+                panel_groupbookdream_bbfs = false
+                fetch_bukumimpi();
                 break;
             case "tafsirmimpi":
                 searchtafsirmimpi = "";
@@ -389,8 +382,17 @@
                 tab_groupbookdream_bbfs = ""
                 panel_groupbookdream_bukumimpi = false
                 panel_groupbookdream_tafsirmimpi = true
-                panel_groupbookdream_bfs = false
-                posttafsirmimpi()
+                panel_groupbookdream_bbfs = false
+                fetch_tafsirmimpi()
+                break;
+            case "bbfs":
+                searchtafsirmimpi = "";
+                tab_groupbookdream_bukumimpi = ""
+                tab_groupbookdream_tafsirmimpi = ""
+                tab_groupbookdream_bbfs = "tab-active"
+                panel_groupbookdream_bukumimpi = false
+                panel_groupbookdream_tafsirmimpi = false
+                panel_groupbookdream_bbfs = true
                 break;
         }
     }
@@ -429,7 +431,7 @@
                 tab_bukumimpi_2d = "tab-active"
                 break;
         }
-        postbukumimpi();
+        fetch_bukumimpi();
     }
     const handleKeyboardbukumimpi_checkenter = (e) => {
         let keyCode = e.which || e.keyCode;
@@ -468,6 +470,7 @@
         }
     }
     initShio();
+    fetch_bukumimpi();
     const convert_time = (e) => {
         let temp = e.split(":")
         let hour = temp[0]
@@ -483,6 +486,158 @@
             temp = "bg-success"
         }
         return temp
+    }
+    let nomor_bbfs = "";
+    let data_bbfs = [];
+    let generate4D = [];
+    let generate3D = [];
+    let generate2D = [];
+    let flag = true
+    let found = true
+    function formbbfs_add() {
+        flag = true;
+        found = true;
+            listbbfs_4d = "";
+            listbbfs_3d = "";
+            listbbfs_2d = "";
+            generate4D = [];
+            generate3D = [];
+            generate2D = [];
+            if (nomor_bbfs == "") {
+                flag = false;
+                alert("Nomor Tidak Boleh Kosong");
+            }
+            if (nomor_bbfs.length < 4 || nomor_bbfs.length > 9) {
+                flag = false;
+                alert("Nomor 4 - 9 Digit");
+            }
+        if(flag){
+            for (let a = 0; a < nomor_bbfs.length; a++) {
+                for (let b = 0; b < nomor_bbfs.length; b++) {
+                    for (let c = 0; c < nomor_bbfs.length; c++) {
+                        for (let d = 0; d < nomor_bbfs.length; d++) {
+                            let flag_check = true
+                            if(nomor_bbfs[a] == nomor_bbfs[b]){
+                                flag_check = false
+                            }
+                            if(nomor_bbfs[a] == nomor_bbfs[c]){
+                                flag_check = false
+                            }
+                            if(nomor_bbfs[a] == nomor_bbfs[d]){
+                                flag_check = false
+                            }
+                            if(nomor_bbfs[b] == nomor_bbfs[c]){
+                                flag_check = false
+                            }
+                            if(nomor_bbfs[b] == nomor_bbfs[d]){
+                                flag_check = false
+                            }
+                            if(nomor_bbfs[c] == nomor_bbfs[d]){
+                                flag_check = false
+                            }
+                            if(flag_check){
+                                let dat = nomor_bbfs[a] + nomor_bbfs[b] +nomor_bbfs[c] +nomor_bbfs[d];
+                                if (generate4D.length > 0) {
+                                    for (let x = 0;x < generate4D.length;x++) {
+                                        if (dat == generate4D[x]) {
+                                            found = true;
+                                        }
+                                    }
+                                    if (found == false) {
+                                        generate4D.push(dat);
+                                    }
+                                } else {
+                                    generate4D.push(dat);
+                                }
+                                found = false;
+                                dat = "";
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            for (let x = 0; x < generate4D.length; x++) {
+                if(x==(parseInt(generate4D.length)-1)){
+                    listbbfs_4d += generate4D[x]
+                }else{
+                    listbbfs_4d += generate4D[x]+"*"
+                }
+            }
+            for (let a = 0; a < nomor_bbfs.length; a++) {
+                for (let b = 0; b < nomor_bbfs.length; b++) {
+                    for (let c = 0; c < nomor_bbfs.length; c++) {
+                        let flag_check = true
+                        if(nomor_bbfs[a] == nomor_bbfs[b]){
+                            flag_check = false
+                        }
+                        if(nomor_bbfs[a] == nomor_bbfs[c]){
+                            flag_check = false
+                        }
+                        if(nomor_bbfs[b] == nomor_bbfs[c]){
+                            flag_check = false
+                        }
+                        if(flag_check){
+                            let dat = nomor_bbfs[a] +nomor_bbfs[b] +nomor_bbfs[c];
+                            if (generate3D.length > 0) {
+                                for (let x = 0;x < generate3D.length;x++) {
+                                    if (dat == generate3D[x]) {
+                                        found = true;
+                                    }
+                                }
+                                if (found == false) {
+                                    generate3D.push(dat);
+                                }
+                            } else {
+                                generate3D.push(dat);
+                            }
+                            found = false;
+                            dat = "";
+                        }
+                    }
+                }
+            }
+            for (let x = 0; x < generate3D.length; x++) {
+                if(x==(parseInt(generate3D.length)-1)){
+                    listbbfs_3d += generate3D[x]
+                }else{
+                    listbbfs_3d += generate3D[x]+"*"
+                }
+            }
+            
+            for (let a = 0; a < nomor_bbfs.length; a++) {
+                for (let b = 0; b < nomor_bbfs.length; b++) {
+                    let flag_check = true
+                    if(nomor_bbfs[a] == nomor_bbfs[b]){
+                        flag_check = false
+                    }
+                    if(flag_check){
+                        let dat = nomor_bbfs[a] +nomor_bbfs[b] ;
+                        if (generate2D.length > 0) {
+                            for (let x = 0;x < generate2D.length;x++) {
+                                if (dat == generate2D[x]) {
+                                    found = true;
+                                }
+                            }
+                            if (found == false) {
+                                generate2D.push(dat);
+                            }
+                        } else {
+                            generate2D.push(dat);
+                        }
+                        found = false;
+                        dat = "";
+                    }
+                }
+            }
+            for (let x = 0; x < generate2D.length; x++) {
+                if(x==(parseInt(generate2D.length)-1)){
+                    listbbfs_2d += generate2D[x]
+                }else{
+                    listbbfs_2d += generate2D[x]+"*"
+                }
+            }
+        }
     }
 </script>
 <svelte:head>
@@ -507,7 +662,7 @@
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
 <Banner_top />
-<article class="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row  justify-items-stretch w-full gap-2">
+<article class="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
     <article class="w-full">
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <div class="card-body p-2 mb-2">
@@ -527,15 +682,15 @@
                             <tbody>
                                 {#each listkeluaran as rec}
                                     <tr>
-                                        <td class="text-[11px] lg:text-sm text-left underline">
+                                        <th class="text-[11px] lg:text-xs text-left underline">
                                             <a sveltekit:prefetch href="{rec.pasaran_slug}">
                                                 {rec.pasaran_name}
                                             </a>
-                                        </td> 
-                                        <td class="text-[11px] lg:text-sm text-center">{rec.pasaran_datekeluaran}</td> 
-                                        <td class="hidden lg:block lg:text-sm  text-left">{rec.pasaran_diundi}</td> 
-                                        <td class="text-[11px] lg:text-sm text-center">{convert_time(rec.pasaran_jamjadwal)}</td> 
-                                        <td class="text-[11px] lg:text-sm text-center">
+                                        </th> 
+                                        <td class="text-[11px] lg:text-xs text-center">{rec.pasaran_datekeluaran}</td> 
+                                        <td class="hidden lg:block lg:text-xs  text-left">{rec.pasaran_diundi}</td> 
+                                        <td class="text-[11px] lg:text-xs text-center">{convert_time(rec.pasaran_jamjadwal)}</td> 
+                                        <td class="text-[11px] lg:text-xs text-center">
                                             <span class="text-accent">{rec.pasaran_keluaran}</span>
                                         </td>
                                     </tr>
@@ -565,12 +720,12 @@
                             <tbody>
                                 {#each listkeluaran as rec}
                                     <tr>
-                                        <td class="text-[11px] lg:text-sm text-left">{rec.pasaran_name}</td> 
-                                        <td class="text-[11px] lg:text-sm text-center">{rec.pasaran_dateprediksi}</td> 
-                                        <td class="text-[11px] lg:text-sm text-center">
+                                        <td class="text-[11px] lg:text-xs text-left">{rec.pasaran_name}</td> 
+                                        <td class="text-[11px] lg:text-xs text-center">{rec.pasaran_dateprediksi}</td> 
+                                        <td class="text-[11px] lg:text-xs text-center">
                                             <span class="text-accent">{rec.pasaran_bbfsprediksi}</span>
                                         </td>
-                                        <td class="text-[11px] lg:text-sm text-center">
+                                        <td class="text-[11px] lg:text-xs text-center">
                                             <span class="text-accent">{rec.pasaran_nomorprediksi}</span>
                                         </td>
                                     </tr>
@@ -860,13 +1015,13 @@
                                     on:click={() => {
                                         handleClickBukuMimpi("2D");
                                     }}
-                                    class="tab {tab_bukumimpi_2d} ">2D</span>
+                                    class="tab {tab_bukumimpi_2d} text-xs lg:text-sm">2D</span>
                             </section>
                             <input
                                 bind:value={searchbukumimpi} 
                                 on:keypress={handleKeyboardbukumimpi_checkenter}
                                 type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
-                            <div class="flex flex-col p-2 gap-2 h-[635px] scrollbar-hide overflow-auto">
+                            <div class="flex flex-col p-2 gap-2 h-[700px] scrollbar-hide overflow-auto">
                                 {#if filterBukuMimpi != ""}
                                     {#each filterBukuMimpi as rec}
                                         <div class="flex justify-start gap-4 border-b-2 border-base-100">
@@ -892,7 +1047,7 @@
                                 bind:value={searchtafsirmimpi} 
                                 on:keypress={handleKeyboardtafsirmimpi_checkenter}
                                 type="text" placeholder="Search" class="input input-bordered w-full rounded-md input-sm" />
-                            <div class="flex flex-col p-2 gap-2 h-[685px] scrollbar-hide overflow-auto">
+                            <div class="flex flex-col p-2 gap-2 h-[760px] scrollbar-hide overflow-auto">
                                 {#if filterTafsirMimpi != ""}
                                     {#each filterTafsirMimpi as rec}
                                         <p class="text-xs lg:text-sm border-b-2 border-base-100 p-2">
@@ -905,6 +1060,56 @@
                                     {/each}
                                 {:else}
                                     <Placholder total_placeholder={8} />
+                                {/if}
+                            </div>
+                        </div>
+                    {/if}
+                    {#if panel_groupbookdream_bbfs}
+                        <div class="flex flex-col gap-2">
+                            <div class="input-group">
+                                <input
+                                    bind:value={nomor_bbfs} 
+                                    on:keypress={handleKeyboardbukumimpi_checkenter}
+                                    maxlength="9"
+                                    type="text" 
+                                    placeholder="Nomor (4-9 Digit)" 
+                                    class="input input-bordered w-full rounded-md input-sm ring-0 ring-offset-0" />
+                                <button on:click={() => {
+                                    formbbfs_add();
+                                }} class="btn btn-sm btn-primary">Generate</button>
+                            </div>
+                            <section class="tabs tabs-boxed">
+                                <span 
+                                    on:click={() => {
+                                        handleTabBBFS("4D");
+                                    }}
+                                    class="tab {tab_bbfs_4d} text-xs lg:text-sm">4D ({listbbfs_4d.length})</span> 
+                                <span 
+                                    on:click={() => {
+                                        handleTabBBFS("3D");
+                                    }}
+                                    class="tab {tab_bbfs_3d} text-xs lg:text-sm">3D ({listbbfs_3d.length})</span>
+                                <span 
+                                    on:click={() => {
+                                        handleTabBBFS("2D");
+                                    }}
+                                    class="tab {tab_bbfs_2d} text-xs lg:text-sm">2D ({listbbfs_2d.length})</span>
+                            </section>
+                            <div class="flex p-2 gap-1 h-[700px] scrollbar-hide overflow-auto">
+                                {#if panel_bbfs_4d}
+                                    <textarea class="textarea textarea-ghost w-full h-screen resize-none" disabled>
+                                        {listbbfs_4d}
+                                    </textarea>
+                                {/if}
+                                {#if panel_bbfs_3d}
+                                    <textarea class="textarea textarea-ghost w-full h-screen resize-none" disabled>
+                                        {listbbfs_3d}
+                                    </textarea>
+                                {/if}
+                                {#if panel_bbfs_2d}
+                                    <textarea class="textarea textarea-ghost w-full h-screen resize-none" disabled>
+                                        {listbbfs_2d}
+                                    </textarea>
                                 {/if}
                             </div>
                         </div>

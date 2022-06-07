@@ -1,15 +1,6 @@
 <script context="module">
     import { MY_GO_PATH_SITE } from '$lib/Env';
-    import { browser } from '$app/env'
     let path_site = MY_GO_PATH_SITE
-    let client_device = "WEBSITE"
-    if(browser){
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            client_device = "MOBILE";
-        } else {
-            client_device = "WEBSITE";
-        }
-    }
     export const load = async ({ params,url }) => {
         // api/keluarantogel/index.js
         let listkeluaran = [];
@@ -51,7 +42,6 @@
         pasaran_title = record_listkeluaran.pasaran_title
         pasaran_descp = record_listkeluaran.pasaran_descp
         return { props: { 
-            client_device,
             path_site,
             slug,
             paito_minggu,
@@ -68,7 +58,6 @@
             listkeluaran }}
     }
 </script>
-  
 <script>
     import Banner_top from '../components/banner_top.svelte';
     export let path_site = "";
@@ -142,21 +131,21 @@
 </section>
 <article class="lg:flex justify-between w-full gap-2">
     <section class="w-full">
-        <section class="tabs tabs-boxed mb-2">
-            <span 
+        <section class="tabs tabs-boxed  w-full mb-2">
+            <h1 
                 on:click={() => {
                     handleTabTogel("resulttogel");
                 }}
-                class="tab {tab_resultogel}">
-                <h2>Hasil Keluaran Togel {capitalize(pasaran_nama)}</h2>
-            </span> 
-            <span
+                class="tab {tab_resultogel} text=[11px] lg:text-xs">
+                Hasil Keluaran Togel
+            </h1> 
+            <h1
                 on:click={() => {
                     handleTabTogel("paitotogel");
                 }}
-                class="tab {tab_paitotogel}">
-                <h2>Paito {capitalize(pasaran_nama)}</h2>
-            </span>
+                class="tab {tab_paitotogel} text=[11px] lg:text-xs">
+                Paito
+            </h1>
         </section>
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <section class="card-body p-2 mb-2">
@@ -165,17 +154,17 @@
                         <table class="table table-compact w-full">
                             <thead>
                                 <tr>
-                                    <th class="text-sm text-center">TANGGAL</th> 
-                                    <th class="text-sm text-center">PERIODE</th> 
-                                    <th class="text-sm text-center">KELUARAN</th>
+                                    <th class="text-xs lg:text-sm text-center">TANGGAL</th> 
+                                    <th class="text-xs lg:text-sm text-center">PERIODE</th> 
+                                    <th class="text-xs lg:text-sm text-center">KELUARAN</th>
                                 </tr>
                             </thead> 
                             <tbody>
                                 {#each listkeluaran as rec}
                                     <tr>
-                                        <td class="text-sm text-center">{rec.keluaran_datekeluaran}</td> 
-                                        <td class="text-sm text-center">{rec.keluaran_periode}</td> 
-                                        <td class="text-sm text-center">
+                                        <td class="text-xs text-center">{rec.keluaran_datekeluaran}</td> 
+                                        <td class="text-xs text-center">{rec.keluaran_periode}</td> 
+                                        <td class="text-xs text-center">
                                             <span class="text-accent">{rec.keluaran_nomor}</span>
                                         </td>
                                     </tr>
@@ -189,48 +178,48 @@
                         <table class="table table-compact w-full">
                             <thead>
                                 <tr>
-                                    <th class="text-sm text-center">MINGGU</th> 
-                                    <th class="text-sm text-center">SENIN</th> 
-                                    <th class="text-sm text-center">SELASA</th> 
-                                    <th class="text-sm text-center">RABU</th> 
-                                    <th class="text-sm text-center">KAMIS</th>
-                                    <th class="text-sm text-center">JUMAT</th>
-                                    <th class="text-sm text-center">SABTU</th>
+                                    <th class="text-xs lg:text-sm text-center">MINGGU</th> 
+                                    <th class="text-xs lg:text-sm text-center">SENIN</th> 
+                                    <th class="text-xs lg:text-sm text-center">SELASA</th> 
+                                    <th class="text-xs lg:text-sm text-center">RABU</th> 
+                                    <th class="text-xs lg:text-sm text-center">KAMIS</th>
+                                    <th class="text-xs lg:text-sm text-center">JUMAT</th>
+                                    <th class="text-xs lg:text-sm text-center">SABTU</th>
                                 </tr>
                             </thead> 
                             <tbody>
                                 <tr>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_minggu as rec }
                                             <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
                                     </td>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_senin as rec }
                                         <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
                                     </td>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_selasa as rec }
                                         <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
                                     </td>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_rabu as rec }
                                         <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
                                     </td>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_kamis as rec }
                                         <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
                                     </td>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_jumat as rec }
                                         <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
                                     </td>
-                                    <td class="text-sm text-center align-top">
+                                    <td class="text-xs text-center align-top">
                                         {#each paito_sabtu as rec }
                                         <span class="text-accent">{rec.keluaran_nomor}</span><br>
                                         {/each}
@@ -246,7 +235,7 @@
     <aside class="w-full lg:w-1/2">
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
             <section class="card-body p-2 mb-2">
-                <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h1>
+                <h2 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Keluaran Togel</h2>
                 <ul class="p-1">
                     {#each listpasaran as rec}
                         <li class="underline p-1 text-xs lg:text-sm">

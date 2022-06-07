@@ -4,7 +4,6 @@ export async function post({request}){
     const object =  await request.json();
     const hostname = object.hostname
     const tafsirmimpi_search = object.tafsirmimpi_search
-    console.log(hostname)
     const resdata = await fetch(path_api+"api/tafsirmimpi", {
         method: "POST",
         headers: {
