@@ -1097,19 +1097,19 @@
                             </section>
                             <div class="flex p-2 gap-1 h-[700px] scrollbar-hide overflow-auto">
                                 {#if panel_bbfs_4d}
-                                    <textarea class="textarea textarea-ghost w-full h-screen resize-none" disabled>
+                                    <p class="break-all text-accent">
                                         {listbbfs_4d}
-                                    </textarea>
+                                    </p>
                                 {/if}
                                 {#if panel_bbfs_3d}
-                                    <textarea class="textarea textarea-ghost w-full h-screen resize-none" disabled>
+                                    <p class="break-all text-accent">
                                         {listbbfs_3d}
-                                    </textarea>
+                                    </p>
                                 {/if}
                                 {#if panel_bbfs_2d}
-                                    <textarea class="textarea textarea-ghost w-full h-screen resize-none" disabled>
+                                    <p class="break-all text-accent">
                                         {listbbfs_2d}
-                                    </textarea>
+                                    </p>
                                 {/if}
                             </div>
                         </div>
