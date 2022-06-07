@@ -47,15 +47,6 @@
                     hostname:hostname_client
                 }),
             }),
-            fetch("/api/bukumimpi", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    hostname:hostname_client
-                }),
-            })
         ]);
 
         const record_listkeluaran = await res_listkeluaran.json();
@@ -438,7 +429,7 @@
         if (keyCode === 13) {
             filterBukuMimpi = [];
             bukumimpi = [];
-            postbukumimpi();
+            fetch_bukumimpi();
         }  
     };
     const handleKeyboardtafsirmimpi_checkenter = (e) => {
@@ -446,7 +437,13 @@
         if (keyCode === 13) {
             filterTafsirMimpi = [];
             tafsirmimpi = [];
-            posttafsirmimpi();
+            fetch_tafsirmimpi();
+        }  
+    };
+    const handleKeyboardbbfs_checkenter = (e) => {
+        let keyCode = e.which || e.keyCode;
+        if (keyCode === 13) {
+            formbbfs_add();
         }  
     };
     $: {
@@ -488,7 +485,9 @@
         return temp
     }
     let nomor_bbfs = "";
-    let data_bbfs = [];
+    let count_4d = 0;
+    let count_3d = 0;
+    let count_2d = 0;
     let generate4D = [];
     let generate3D = [];
     let generate2D = [];
@@ -497,20 +496,23 @@
     function formbbfs_add() {
         flag = true;
         found = true;
-            listbbfs_4d = "";
-            listbbfs_3d = "";
-            listbbfs_2d = "";
-            generate4D = [];
-            generate3D = [];
-            generate2D = [];
-            if (nomor_bbfs == "") {
-                flag = false;
-                alert("Nomor Tidak Boleh Kosong");
-            }
-            if (nomor_bbfs.length < 4 || nomor_bbfs.length > 9) {
-                flag = false;
-                alert("Nomor 4 - 9 Digit");
-            }
+        listbbfs_4d = "";
+        listbbfs_3d = "";
+        listbbfs_2d = "";
+        generate4D = [];
+        generate3D = [];
+        generate2D = [];
+        count_4d = 0;
+        count_3d = 0;
+        count_2d = 0;
+        if (nomor_bbfs == "") {
+            flag = false;
+            alert("Nomor Tidak Boleh Kosong");
+        }
+        if (nomor_bbfs.length < 4 || nomor_bbfs.length > 9) {
+            flag = false;
+            alert("Nomor 4 - 9 Digit");
+        }
         if(flag){
             for (let a = 0; a < nomor_bbfs.length; a++) {
                 for (let b = 0; b < nomor_bbfs.length; b++) {
@@ -558,6 +560,7 @@
                 }
             }
             for (let x = 0; x < generate4D.length; x++) {
+                count_4d = count_4d + 1
                 if(x==(parseInt(generate4D.length)-1)){
                     listbbfs_4d += generate4D[x]
                 }else{
@@ -598,6 +601,7 @@
                 }
             }
             for (let x = 0; x < generate3D.length; x++) {
+                count_3d = count_3d + 1
                 if(x==(parseInt(generate3D.length)-1)){
                     listbbfs_3d += generate3D[x]
                 }else{
@@ -631,6 +635,7 @@
                 }
             }
             for (let x = 0; x < generate2D.length; x++) {
+                count_2d = count_2d + 1
                 if(x==(parseInt(generate2D.length)-1)){
                     listbbfs_2d += generate2D[x]
                 }else{
@@ -1069,7 +1074,7 @@
                             <div class="input-group">
                                 <input
                                     bind:value={nomor_bbfs} 
-                                    on:keypress={handleKeyboardbukumimpi_checkenter}
+                                    on:keypress={handleKeyboardbbfs_checkenter}
                                     maxlength="9"
                                     type="text" 
                                     placeholder="Nomor (4-9 Digit)" 
@@ -1083,17 +1088,17 @@
                                     on:click={() => {
                                         handleTabBBFS("4D");
                                     }}
-                                    class="tab {tab_bbfs_4d} text-xs lg:text-sm">4D ({listbbfs_4d.length})</span> 
+                                    class="tab {tab_bbfs_4d} text-xs lg:text-sm">4D ({count_4d})</span> 
                                 <span 
                                     on:click={() => {
                                         handleTabBBFS("3D");
                                     }}
-                                    class="tab {tab_bbfs_3d} text-xs lg:text-sm">3D ({listbbfs_3d.length})</span>
+                                    class="tab {tab_bbfs_3d} text-xs lg:text-sm">3D ({count_3d})</span>
                                 <span 
                                     on:click={() => {
                                         handleTabBBFS("2D");
                                     }}
-                                    class="tab {tab_bbfs_2d} text-xs lg:text-sm">2D ({listbbfs_2d.length})</span>
+                                    class="tab {tab_bbfs_2d} text-xs lg:text-sm">2D ({count_2d})</span>
                             </section>
                             <div class="flex p-2 gap-1 h-[700px] scrollbar-hide overflow-auto">
                                 {#if panel_bbfs_4d}
