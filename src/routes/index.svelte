@@ -1,6 +1,9 @@
 <script context="module">
-    import { MY_GO_PATH_SITE } from '$lib/Env';
-    let path_site = MY_GO_PATH_SITE
+    import { MY_GO_PATH_MODE,MY_GO_PATH_SITE,MY_GO_PATH_LOCAL } from '$lib/Env';
+    let path_site = MY_GO_PATH_LOCAL
+    if(MY_GO_PATH_MODE == "PRODUCTION"){
+        path_site = MY_GO_PATH_SITE
+    }
    
     export const load = async ({ fetch,url}) => {
         let hostname_client = url.host
