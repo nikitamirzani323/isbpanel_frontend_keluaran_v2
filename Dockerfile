@@ -10,6 +10,7 @@ USER node:node
 WORKDIR /app
 COPY --from=builder --chown=node:node /app/build ./build
 COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/env-sample /app/.env
 COPY --chown=node:node package.json .
 ENV PORT 3010
 EXPOSE 3010

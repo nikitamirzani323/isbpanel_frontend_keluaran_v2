@@ -3,7 +3,7 @@ version: '2'
 services:
   isbpanel-frontend-keluaran:
     container_name: isbpanel-frontend-keluaran
-    image: isbpanel-frontend-keluaran:0.2.3
+    image: isbpanel-frontend-keluaran:0.2.4
     build: .
     volumes:
     - ./frontendkeluaran:/app/frontendkeluaran
