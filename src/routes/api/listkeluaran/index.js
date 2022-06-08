@@ -3,7 +3,6 @@ export async function post({request,url}){
     const path_api = MY_GO_BACKEND_URL
     const object =  await request.json();
     const hostname = url.host
-    console.log(hostname)
     const resdata = await fetch(path_api+"api/pasaran", {
         method: "POST",
         headers: {
