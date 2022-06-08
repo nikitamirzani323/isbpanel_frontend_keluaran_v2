@@ -18,9 +18,7 @@
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    hostname:hostname_client
-                }),
+                body: JSON.stringify({}),
             }),
             fetch("/api/listproviderslot", {
                 method: "POST",

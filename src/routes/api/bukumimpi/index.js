@@ -1,17 +1,18 @@
 import { MY_GO_BACKEND_URL } from '$lib/Env';
-export async function post({request}){
+export async function post({request,url}){
     const path_api = MY_GO_BACKEND_URL
     const object =  await request.json();
     const hostname = object.hostname
     const bukumimpi_nama = object.bukumimpi_nama
     const bukumimpi_tipe = object.bukumimpi_tipe
+    console.log(url)
     const resdata = await fetch(path_api+"api/bukumimpi", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "client_hostname": hostname,
+            "client_hostname": url.origin,
             "nama": bukumimpi_nama,
             "tipe": bukumimpi_tipe,
         }),
