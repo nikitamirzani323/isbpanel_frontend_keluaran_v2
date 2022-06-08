@@ -9,7 +9,12 @@ const config = {
 			out: 'build',
 			precompress: false,
 			envPrefix: ''
-		})
+		}),
+		vite: {
+			define: {
+			  'process.env': process.env,
+			},
+		},
 	},
 	preprocess: [
 		preprocess({
