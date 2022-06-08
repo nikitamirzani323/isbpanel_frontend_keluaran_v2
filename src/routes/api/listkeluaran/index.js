@@ -18,6 +18,9 @@ export async function post({request,url}){
     if(status == 200){
         return {
             status:status,
+            headers: {
+                'Cache-Control': 'max-age=0, s-maxage=60',
+            },
             body:{data:jsondata.record}
         }
     }else{
