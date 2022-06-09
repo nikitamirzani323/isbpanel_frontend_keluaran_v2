@@ -1,4 +1,5 @@
 <script context="module">
+    import { base, assets } from '$app/paths';
     import { MY_GO_PATH_MODE,MY_GO_PATH_SITE,MY_GO_PATH_LOCAL } from '$lib/Env';
     let path_site = MY_GO_PATH_LOCAL
     if(MY_GO_PATH_MODE == "PRODUCTION"){
@@ -6,7 +7,7 @@
     }
    
     export const load = async ({ fetch,url}) => {
-        let hostname_client = url.host
+        path_site = url.origin
         let listkeluaran = [];
         let listnews = [];
         let listproviderslot = [];
@@ -25,9 +26,7 @@
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    hostname:hostname_client
-                }),
+                body: JSON.stringify({ }),
             }),
             fetch("/api/listslotgacor", {
                 method: "POST",
@@ -35,7 +34,6 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    hostname:hostname_client,
                     limit:limit,
                 }),
             }),
@@ -44,9 +42,7 @@
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    hostname:hostname_client
-                }),
+                body: JSON.stringify({ }),
             }),
         ]);
 
@@ -269,7 +265,7 @@
     async function fetch_bukumimpi(){
         filterBukuMimpi = [];
         bukumimpi = [];
-        const resdata = await fetch(path_site+"api/bukumimpi", {
+        const resdata = await fetch(path_site+"/api/bukumimpi", {
             method: "POST",
             body: JSON.stringify({
                 bukumimpi_nama: searchbukumimpi.toLowerCase(),
@@ -292,7 +288,7 @@
     async function fetch_tafsirmimpi(){
         filterTafsirMimpi = [];
         tafsirmimpi = [];
-        const resdata = await fetch("/api/tafsirmimpi", {
+        const resdata = await fetch(path_site+"/api/tafsirmimpi", {
             method: "POST",
             body: JSON.stringify({
                 tafsirmimpi_search: searchtafsirmimpi.toLowerCase(),
@@ -315,11 +311,9 @@
     }
     async function postmovienews(){
         listnewsmovie = [];
-        const resdata = await fetch("/api/listnewsmovie", {
+        const resdata = await fetch(path_site+"/api/listnewsmovie", {
             method: "POST",
-            body: JSON.stringify({
-                hostname: hostname_client,
-            }),
+            body: JSON.stringify({}),
         });
         if (!resdata.ok) {
             const pasarMessage = `An error has occured: ${resdata.status}`;
