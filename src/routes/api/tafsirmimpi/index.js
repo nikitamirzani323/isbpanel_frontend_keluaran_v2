@@ -1,8 +1,7 @@
 import { MY_GO_BACKEND_URL } from '$lib/Env';
-export async function post({request}){
+export async function post({request,url}){
     const path_api = MY_GO_BACKEND_URL
     const object =  await request.json();
-    const hostname = object.hostname
     const tafsirmimpi_search = object.tafsirmimpi_search
     const resdata = await fetch(path_api+"api/tafsirmimpi", {
         method: "POST",
@@ -10,7 +9,8 @@ export async function post({request}){
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "client_hostname": hostname,
+            "client_Device": "WEBSITE",
+            "client_hostname": url.host,
             "search": tafsirmimpi_search,
         }),
     });

@@ -20,7 +20,7 @@
         let pasaran_descp = "";
         let slug = params.slug;
         let hostname_client = url.host
-        console.log(params)
+        // console.log(params)
         const res_listkeluaran = await fetch(path_site+"api/keluarantogel", {
             method: "POST",
             headers: {

@@ -16,6 +16,19 @@ const config = {
 			},
 		},
 	},
+	files: {
+		assets: 'static',
+		hooks: 'src/hooks',
+		lib: 'src/lib',
+		params: 'src/params',
+		routes: 'src/routes',
+		serviceWorker: 'src/service-worker',
+		template: 'src/app.html'
+	},
+	paths: {
+		assets: '',
+		base: ''
+	},
 	preprocess: [
 		preprocess({
 		  postcss: true,

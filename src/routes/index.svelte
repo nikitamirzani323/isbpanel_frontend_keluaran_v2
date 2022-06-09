@@ -70,7 +70,6 @@
         return {
             props: {
                 path_site,
-                hostname_client,
                 listkeluaran,
                 listproviderslot,
                 listslotgacor,
@@ -87,7 +86,6 @@
     import Banner_top from '../components/banner_top.svelte';
     
     export let path_site = "";
-    export let hostname_client = "";
     export let listkeluaran = [];
     export let listproviderslot = [];
     export let listslotgacor = [];
@@ -274,28 +272,22 @@
         const resdata = await fetch(path_site+"api/bukumimpi", {
             method: "POST",
             body: JSON.stringify({
-                hostname: hostname_client,
                 bukumimpi_nama: searchbukumimpi.toLowerCase(),
                 bukumimpi_tipe: tipe_bukumimpi,
             }),
         });
-        if (!resdata.ok) {
-            const pasarMessage = `An error has occured: ${resdata.status}`;
-            throw new Error(pasarMessage);
-        }else{
-            const jsondata = await resdata.json();
-            let record = jsondata.data;
-            for (var i = 0; i < record.length; i++) {
-                bukumimpi = [
-                    ...bukumimpi,
-                    {
-                        bukumimpi_type: record[i]["bukumimpi_type"],
-                        bukumimpi_name: record[i]["bukumimpi_name"],
-                        bukumimpi_nomor: record[i]["bukumimpi_nomor"],
-                    },
-                ];
-            }
-		}
+        const jsondata = await resdata.json();
+        let record = jsondata.data;
+        for (var i = 0; i < record.length; i++) {
+            bukumimpi = [
+                ...bukumimpi,
+                {
+                    bukumimpi_type: record[i]["bukumimpi_type"],
+                    bukumimpi_name: record[i]["bukumimpi_name"],
+                    bukumimpi_nomor: record[i]["bukumimpi_nomor"],
+                },
+            ];
+        }
     }
     async function fetch_tafsirmimpi(){
         filterTafsirMimpi = [];
@@ -303,29 +295,23 @@
         const resdata = await fetch("/api/tafsirmimpi", {
             method: "POST",
             body: JSON.stringify({
-                hostname: hostname_client,
                 tafsirmimpi_search: searchtafsirmimpi.toLowerCase(),
             }),
         });
-        if (!resdata.ok) {
-            const pasarMessage = `An error has occured: ${resdata.status}`;
-            throw new Error(pasarMessage);
-        }else{
-            const jsondata = await resdata.json();
-            let record = jsondata.data;
-            for (var i = 0; i < record.length; i++) {
-                tafsirmimpi = [
-                    ...tafsirmimpi,
-                    {
-                        tafsirmimpi_mimpi: record[i]["tafsirmimpi_mimpi"],
-                        tafsirmimpi_artimimpi: record[i]["tafsirmimpi_artimimpi"],
-                        tafsirmimpi_angka2d: record[i]["tafsirmimpi_angka2d"],
-                        tafsirmimpi_angka3d: record[i]["tafsirmimpi_angka3d"],
-                        tafsirmimpi_angka4d: record[i]["tafsirmimpi_angka4d"],
-                    },
-                ];
-            }
-		}
+        const jsondata = await resdata.json();
+        let record = jsondata.data;
+        for (var i = 0; i < record.length; i++) {
+            tafsirmimpi = [
+                ...tafsirmimpi,
+                {
+                    tafsirmimpi_mimpi: record[i]["tafsirmimpi_mimpi"],
+                    tafsirmimpi_artimimpi: record[i]["tafsirmimpi_artimimpi"],
+                    tafsirmimpi_angka2d: record[i]["tafsirmimpi_angka2d"],
+                    tafsirmimpi_angka3d: record[i]["tafsirmimpi_angka3d"],
+                    tafsirmimpi_angka4d: record[i]["tafsirmimpi_angka4d"],
+                },
+            ];
+        }
     }
     async function postmovienews(){
         listnewsmovie = [];

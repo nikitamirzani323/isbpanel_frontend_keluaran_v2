@@ -12,7 +12,6 @@
         let listproviderslot = [];
         let slug = params.slug;
         let hostname_client = url.host
-
         const res_detailprovider = await fetch(path_site+"api/listproviderslotdetail", {
             method: "POST",
             headers: {
