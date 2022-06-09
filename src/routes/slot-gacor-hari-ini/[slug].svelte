@@ -24,8 +24,9 @@
         })
         const record_detailprovider = await res_detailprovider.json();
         providerslot_name = record_detailprovider.providerslot_name
-        providerslot_title = record_detailprovider.providerslot_title
-        providerslot_descp = record_detailprovider.providerslot_descp
+            providerslot_title = record_detailprovider.providerslot_title
+            providerslot_descp = record_detailprovider.providerslot_descp
+        
         const res_listslotgacor = await fetch(path_site+"api/listslotgacor", {
             method: "POST",
             headers: {

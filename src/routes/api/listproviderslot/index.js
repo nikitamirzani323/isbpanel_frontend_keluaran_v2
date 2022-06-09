@@ -23,7 +23,7 @@ export async function post({request,url}){
     }else{
         return {
             status:400,
-            body:{data:message}
+            body:{data:""}
         }
     }
 }

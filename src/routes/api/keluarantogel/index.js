@@ -54,7 +54,23 @@ export async function post({request,url}){
     }else{
         return {
             status:400,
-            body:{data:message}
+            body:{
+                paito_minggu:"",
+                paito_senin:"",
+                paito_selasa:"",
+                paito_rabu:"",
+                paito_kamis:"",
+                paito_jumat:[],
+                paito_sabtu:[],
+                pasaran_nama:[],
+                pasaran_livedraw:[],
+                pasaran_jadwal:[],
+                pasaran_diundi:[],
+                pasaran_title:[],
+                pasaran_descp:[],
+                listpasaran:[],
+                data:[]
+            }
         }
     }
 }

@@ -35,7 +35,12 @@ export async function post({request,url}){
     }else{
         return {
             status:400,
-            body:{data:message}
+            body:{
+                providerslot_name:"",
+                providerslot_image:"",
+                providerslot_title:"",
+                providerslot_descp:""
+            }
         }
     }
 }

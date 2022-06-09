@@ -17,6 +17,7 @@ export async function post({request,url}){
         }),
     });
     const jsondata = await resdata.json();
+    
     const status = jsondata.status;
     const message = jsondata.message;
     if(status == 200){
@@ -27,7 +28,7 @@ export async function post({request,url}){
     }else{
         return {
             status:400,
-            body:{data:message}
+            body:{data:[]}
         }
     }
 }
