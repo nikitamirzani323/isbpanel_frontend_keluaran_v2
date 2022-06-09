@@ -5,57 +5,69 @@
         path_site = MY_GO_PATH_SITE
     }
     export const load = async ({ params,url }) => {
+        path_site = url.origin
+        let listbanner = []
         let providerslot_name = ""
         let providerslot_title = ""
         let providerslot_descp = ""
         let listslotgacor = [];
         let listproviderslot = [];
         let slug = params.slug;
-        let hostname_client = url.host
-        const res_detailprovider = await fetch(path_site+"api/listproviderslotdetail", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client,
-                slug:slug,
+        const [res_listbanner, res_detailprovider,res_listslotgacor,res_listproviderslot] = await Promise.all([
+            fetch(path_site+"/api/listbanner", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({}),
             }),
-        })
+            fetch(path_site+"/api/listproviderslotdetail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    slug:slug,
+                }),
+            }),
+            fetch(path_site+"/api/listslotgacor", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    slug:slug,
+                    limit:0,
+                }),
+            }),
+            fetch(path_site+"/api/listproviderslot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({}),
+            }),
+        ]);
+        const record_listbanner= await res_listbanner.json();
+        listbanner = record_listbanner.data
+
         const record_detailprovider = await res_detailprovider.json();
         providerslot_name = record_detailprovider.providerslot_name
-            providerslot_title = record_detailprovider.providerslot_title
-            providerslot_descp = record_detailprovider.providerslot_descp
+        providerslot_title = record_detailprovider.providerslot_title
+        providerslot_descp = record_detailprovider.providerslot_descp
         
-        const res_listslotgacor = await fetch(path_site+"api/listslotgacor", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client,
-                slug:slug,
-                limit:0,
-            }),
-        })
+      
         const record_listslotgacor = await res_listslotgacor.json();
         listslotgacor = record_listslotgacor.data
 
-        const res_listproviderslot = await fetch(path_site+"api/listproviderslot", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                hostname:hostname_client
-            }),
-        })
+       
         const record_listproviderslot = await res_listproviderslot.json();
         listproviderslot = record_listproviderslot.data
 
         return { props: { 
             path_site,
             slug,
+            listbanner,
             providerslot_name,
             providerslot_title,
             providerslot_descp,
@@ -65,6 +77,7 @@
 <script>
     import Banner_top from '../../components/banner_top.svelte';
     import Placholder from '../../components/placholder.svelte';
+    export let listbanner = []
     export let listslotgacor = []
     export let listproviderslot = []
     export let path_site = ""
@@ -104,7 +117,7 @@
     <meta property="twitter:description" content="{providerslot_descp}">
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
-<Banner_top />
+<Banner_top {listbanner}/>
 <section class="text-sm breadcrumbs">
     <ul>
         <li class="text-xs lg:text-sm"><a href="/">Home</a></li> 

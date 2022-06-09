@@ -5,7 +5,8 @@
         path_site = MY_GO_PATH_SITE
     }
     export const load = async ({ params,url }) => {
-        // api/keluarantogel/index.js
+        path_site = url.origin
+        let listbanner = [];
         let listkeluaran = [];
         let listpasaran = [];
         let paito_minggu = [];
@@ -20,8 +21,21 @@
         let pasaran_descp = "";
         let slug = params.slug;
         let hostname_client = url.host
-        // console.log(params)
-        const res_listkeluaran = await fetch(path_site+"api/keluarantogel", {
+        
+        const res_listbanner = await fetch(path_site+"/api/listbanner", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                hostname:hostname_client,
+                keluaran_id:slug,
+            }),
+        })
+        const record_listbanner= await res_listbanner.json();
+        listbanner = record_listbanner.data
+
+        const res_listkeluaran = await fetch(path_site+"/api/keluarantogel", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -57,6 +71,7 @@
             pasaran_nama,
             pasaran_title,
             pasaran_descp,
+            listbanner,
             listpasaran,
             listkeluaran }}
     }
@@ -64,6 +79,7 @@
 <script>
     import Banner_top from '../components/banner_top.svelte';
     export let path_site = "";
+    export let listbanner = [];
     export let listkeluaran = [];
     export let listpasaran = [];
     export let paito_minggu = {};
@@ -125,7 +141,7 @@
     <meta property="twitter:description" content="{pasaran_descp}">
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
-<Banner_top />
+<Banner_top {listbanner} />
 <section class="text-sm breadcrumbs">
     <ul>
       <li class="text-xs lg:text-sm"><a href="/">Home</a></li> 

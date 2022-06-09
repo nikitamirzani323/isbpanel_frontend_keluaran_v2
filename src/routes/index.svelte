@@ -8,12 +8,20 @@
    
     export const load = async ({ fetch,url}) => {
         path_site = url.origin
+        let listbanner = []
         let listkeluaran = [];
         let listnews = [];
         let listproviderslot = [];
         let listslotgacor = [];
         let limit = 9
-        const [res_listkeluaran, res_listproviderslot, res_listslotgacor, res_listnews] = await Promise.all([
+        const [res_listbanner, res_listkeluaran, res_listproviderslot, res_listslotgacor, res_listnews] = await Promise.all([
+            fetch("/api/listbanner", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({}),
+            }),
             fetch("/api/listkeluaran", {
                 method: "POST",
                 headers: {
@@ -45,6 +53,8 @@
                 body: JSON.stringify({ }),
             }),
         ]);
+        const record_listbanner= await res_listbanner.json();
+        listbanner = record_listbanner.data
 
         const record_listkeluaran = await res_listkeluaran.json();
         listkeluaran = record_listkeluaran.data
@@ -66,6 +76,7 @@
         return {
             props: {
                 path_site,
+                listbanner,
                 listkeluaran,
                 listproviderslot,
                 listslotgacor,
@@ -82,6 +93,7 @@
     import Banner_top from '../components/banner_top.svelte';
     
     export let path_site = "";
+    export let listbanner = [];
     export let listkeluaran = [];
     export let listproviderslot = [];
     export let listslotgacor = [];
@@ -647,7 +659,7 @@
     <meta property="twitter:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
     <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
 </svelte:head>
-<Banner_top />
+<Banner_top {listbanner} />
 <article class="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
     <article class="w-full">
         <section class="card w-full bg-base-300 shadow-xl text-neutral-content rounded-md mb-2">
