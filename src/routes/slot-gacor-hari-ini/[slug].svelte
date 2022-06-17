@@ -86,12 +86,12 @@
     export let providerslot_descp = ""
     export let slug = ""
     const bg_slotprogress = (e) => {
-        let temp = "bg-primary"
+        let temp = "bg-[#ef91bb] text-neutral"
         if(parseInt(e) > 49 && parseInt(e)<71){
-            temp = "bg-accent"
+            temp = "bg-[#f79929] text-white"
         }
         if(parseInt(e) > 70 ){
-            temp = "bg-success"
+            temp = "bg-[#14af90] text-white"
         }
         return temp
     }
@@ -161,7 +161,7 @@
                                 <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
                                 <h3 class="hidden lg:block text-xs text-base-content -mt-2">{rec.prediksislot_name}</h3>
                                 <section class="w-full bg-gray-200 rounded-full -mt-2">
-                                    <section class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-bold text-neutral text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
+                                    <section class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-bold  text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
                                         {rec.prediksislot_prediksi}%
                                     </section>
                                 </section>
