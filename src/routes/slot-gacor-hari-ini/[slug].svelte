@@ -1,9 +1,5 @@
 <script context="module">
-    import { MY_GO_PATH_MODE,MY_GO_PATH_SITE,MY_GO_PATH_LOCAL } from '$lib/Env';
-    let path_site = MY_GO_PATH_LOCAL
-    if(MY_GO_PATH_MODE == "PRODUCTION"){
-        path_site = MY_GO_PATH_SITE
-    }
+    let path_site = ""
     export const load = async ({ params,url }) => {
         path_site = url.origin
         let listbanner = []
