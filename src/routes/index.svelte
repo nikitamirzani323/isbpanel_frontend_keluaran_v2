@@ -1180,7 +1180,7 @@
                     {#if panel_newberita}
                         {#if listnews != ""}
                             <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Berita Hari Ini</h1>
-                            <section class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">  
+                            <section class="flex flex-col w-full gap-2 h-[1300px] scrollbar-hide overflow-auto">  
                                 {#each listnews as rec}
                                     <a href="{rec.news_url}" target="_blank">
                                         <section class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
@@ -1204,7 +1204,7 @@
                     {#if panel_newmovie}
                         {#if listnewsmovie != ""}
                             <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Movie Minggu Ini</h1>
-                            <section class="flex flex-col w-full gap-2 h-[820px] scrollbar-hide overflow-auto">
+                            <section class="flex flex-col w-full gap-2 h-[1300px] scrollbar-hide overflow-auto">
                                 {#each listnewsmovie as rec}
                                     <a href="{rec.news_url}" target="_blank">
                                         <section class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
