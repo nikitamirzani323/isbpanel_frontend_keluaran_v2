@@ -1,5 +1,5 @@
 <script>
-    import logo from '$lib/assets/logo_sdsbresult.png';
+    import logo from '$lib/assets/logo_scbdresult.png';
 </script>
 <header class="sticky top-0 z-30 flex w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content lg:shadow-sm">
     <nav class="navbar  ">

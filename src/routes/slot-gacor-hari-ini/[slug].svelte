@@ -73,6 +73,7 @@
 <script>
     import Banner_top from '../../components/banner_top.svelte';
     import Placholder from '../../components/placholder.svelte';
+    import imgdummy_mini from '$lib/assets/placeholder_mini_scbd.png';
     export let listbanner = []
     export let listslotgacor = []
     export let listproviderslot = []
@@ -91,6 +92,7 @@
         }
         return temp
     }
+   
 </script>
 <svelte:head>
     <title>{providerslot_title}</title>
@@ -154,6 +156,7 @@
                             <a 
                                 class="flex flex-col justify-center items-center w-full gap-2 mb-5" 
                                 href="https://146.190.4.188/" target="_blank">
+                               
                                 <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
                                 <h3 class="hidden lg:block text-xs text-base-content -mt-2">{rec.prediksislot_name}</h3>
                                 <section class="w-full bg-gray-200 rounded-full -mt-2">

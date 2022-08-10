@@ -82,7 +82,8 @@
 <script>
     import {fade} from "svelte/transition";
     import { flip } from 'svelte/animate';
-    import imgdummy from '$lib/assets/placeholder.png';
+    import imgdummy from '$lib/assets/placeholder_scbd.png';
+    import imgdummy_mini from '$lib/assets/placeholder_mini_scbd.png';
     import Placholder from '../components/placholder.svelte';
     import Banner_top from '../components/banner_top.svelte';
     
@@ -1147,7 +1148,9 @@
                             <a 
                                 class="flex flex-col justify-center items-center w-full gap-2 mb-2" 
                                 href="https://146.190.4.188/" target="_blank">
-                                <img src="{rec.prediksislot_image}" alt="{rec.prediksislot_name}">
+                                <img  
+                                    use:lazy="{{src: rec.prediksislot_image}}" 
+                                    src="{imgdummy_mini}" alt="{rec.prediksislot_name}">
                                 <h3 class="hidden lg:block text-xs text-base-content">{rec.prediksislot_name}</h3>
                                 <section class="w-full bg-gray-200 rounded-full ">
                                     <section class="{bg_slotprogress(rec.prediksislot_prediksi)} animate-pulse text-xs font-medium  text-center p-0.5 leading-none rounded-full" style="width: {rec.prediksislot_prediksi}%"> 
@@ -1180,7 +1183,7 @@
                     {#if panel_newberita}
                         {#if listnews != ""}
                             <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Berita Hari Ini</h1>
-                            <section class="flex flex-col w-full gap-2 h-[1300px] scrollbar-hide overflow-auto">  
+                            <section class="flex flex-col w-full gap-2 h-[1250px] scrollbar-hide overflow-auto">  
                                 {#each listnews as rec}
                                     <a href="{rec.news_url}" target="_blank">
                                         <section class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
@@ -1204,7 +1207,7 @@
                     {#if panel_newmovie}
                         {#if listnewsmovie != ""}
                             <h1 class="card-title border-b-2 border-primary-focus p-2 font-bold text-xs lg:text-sm">Movie Minggu Ini</h1>
-                            <section class="flex flex-col w-full gap-2 h-[1300px] scrollbar-hide overflow-auto">
+                            <section class="flex flex-col w-full gap-2 h-[1250px] scrollbar-hide overflow-auto">
                                 {#each listnewsmovie as rec}
                                     <a href="{rec.news_url}" target="_blank">
                                         <section class="card w-full bg-base-300 text-neutral-content rounded-none border-b-2 border-primary-focus">
