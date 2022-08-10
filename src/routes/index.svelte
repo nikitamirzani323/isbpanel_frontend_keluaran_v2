@@ -647,14 +647,14 @@
     <meta property="og:url" content="{path_site}">
     <meta property="og:title" content="Hasil Keluaran Togel / Berita Hari Ini">
     <meta property="og:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
-    <meta property="og:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
+    <meta property="og:image" content="https://i.ibb.co/pXYmddf/Screenshot-8.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{path_site}">
     <meta property="twitter:title" content="Hasil Keluaran Togel / Berita Hari Ini">
     <meta property="twitter:description" content="Keluaran Togel Hongkong, Keluaran nomor togel, keluaran nomor togel, Keluaran hk, Keluaran sgp, Keluaran bullseye, Keluaran nomor sgp">
-    <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
+    <meta property="twitter:image" content="https://i.ibb.co/pXYmddf/Screenshot-8.png">
 </svelte:head>
 <Banner_top {listbanner} />
 <article class="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
